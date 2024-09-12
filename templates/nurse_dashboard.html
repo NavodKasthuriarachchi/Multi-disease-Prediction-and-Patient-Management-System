@@ -94,7 +94,7 @@
 
     <h2>Predict Diabetes for a Patient:</h2>
     <!-- Updated form to select a patient -->
-    <form action="{{ url_for('predict_diabetes') }}" method="POST">
+    <!-- <form action="{{ url_for('add_prediction') }}" method="POST">
         <label for="patient_id">Select Patient:</label>
         <select name="patient_id" required>
             {% for patient in patients %}
@@ -112,7 +112,11 @@
         <input type="number" step="0.01" name="glucose" required><br>
 
         <button type="submit">Predict Diabetes</button>
-    </form>
+    </form> -->
+
+    <a href="{{ url_for('add_prediction') }}" class="btn btn-primary">Predict Diabetes</a>
+
+
 
     <h2>Make an Appointment:</h2>
     <form action="{{ url_for('book_appointment') }}" method="POST">

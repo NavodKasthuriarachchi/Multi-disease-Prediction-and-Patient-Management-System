@@ -4,17 +4,91 @@ from project_app import app
 from project_app.__init__ import mysql
 from project_app.models import User
 import os
+import numpy as np 
+from flask import Flask, request, jsonify, render_template
+import pickle
+import pandas as pd
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from MySQLdb.cursors import DictCursor
 
 # Home route
 @app.route('/')
-# @login_required
+@login_required
 def home():
     return render_template('home.html')
 
+# Load the diabetes prediction model.....................................................................................................................................................................................................................
+with open("J:/Final Project/multi_disease_system/project_app/diabetes.pkl", 'rb') as model_file:
+    diabetes_model = pickle.load(model_file)
 
+# Route to display the prediction page
+# Route to display the prediction page
+@app.route('/predict', methods=['GET', 'POST'])
+@login_required  # Ensure that only logged-in users can access this
+def add_prediction():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, first_name, last_name FROM patients")
+    patients = cur.fetchall()
+
+    if request.method == 'POST':
+        try:
+            # Retrieve form data from the request
+            patient_id = request.form.get('patient_id')
+            pregnancies = float(request.form['Pregnancies'])
+            glucose = float(request.form['Glucose'])
+            blood_pressure = float(request.form['BloodPressure'])
+            skin_thickness = float(request.form['SkinThickness'])
+            insulin = float(request.form['Insulin'])
+            bmi = float(request.form['BMI'])
+            diabetes_pedigree = float(request.form['DiabetesPedigreeFunction'])
+            age = float(request.form['Age'])
+
+            # Get the actual nurse_id from the nurses table based on the current user's id
+            cur.execute("SELECT id FROM nurses WHERE user_id = %s", (current_user.id,))
+            nurse_data = cur.fetchone()
+
+            if not nurse_data:
+                flash('Error: Nurse record not found for the current user.')
+                return redirect(url_for('add_prediction'))
+
+            nurse_id = nurse_data[0]  # Extract the nurse_id
+
+            # Prepare data for prediction
+            input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree, age]])
+
+            # Make prediction
+            prediction = diabetes_model.predict(input_data)
+
+            # Interpret the prediction result
+            prediction_result = "likely" if prediction[0] == 1 else "unlikely"
+
+            # Debugging: Print values to ensure all variables are correct
+            print(f"patient_id: {patient_id}, nurse_id: {nurse_id}, pregnancies: {pregnancies}, glucose: {glucose}, blood_pressure: {blood_pressure}")
+            print(f"skin_thickness: {skin_thickness}, insulin: {insulin}, bmi: {bmi}, diabetes_pedigree: {diabetes_pedigree}, age: {age}, prediction_result: {prediction_result}")
+
+            # Insert prediction into the 'predictions' table
+            query = """
+                INSERT INTO predictions 
+                (patient_id, nurse_id, pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree, age, prediction_result) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            cur.execute(query, (patient_id, nurse_id, pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree, age, prediction_result))
+
+            # Commit the changes to the database
+            mysql.connection.commit()
+            cur.close()
+
+            # Flash a message and return the template with the prediction result
+            flash('Prediction made and stored successfully!')
+            return render_template('index.html', prediction_text=f"The prediction is {prediction_result}.", patients=patients)
+
+        except Exception as e:
+            flash(f"Error in making prediction: {str(e)}")
+            return redirect(url_for('add_prediction'))
+
+    # Render the prediction form
+    return render_template('index.html', patients=patients)
 #Register Nurse...................................................................................................................................................................................................................................
 @app.route('/register_nurse', methods=['GET', 'POST'])
 def register_nurse():
@@ -73,7 +147,6 @@ def register_doctor():
         return redirect(url_for('login'))
 
     return render_template('register_doctor.html')
-
 #Register patient...................................................................................................................................................................................................................................
 @app.route('/register_patient', methods=['POST'])
 @login_required
@@ -264,10 +337,34 @@ def doctor_dashboard():
     
     appointments = cur.fetchall()
 
-    # Debugging: Print the fetched appointments to check patient IDs
-    print("Fetched appointments:", appointments)
+     # Fetch the prediction data for the patients
+    cur.execute("""
+        SELECT 
+            p.first_name AS patient_first_name, 
+            p.last_name AS patient_last_name, 
+            pr.pregnancies, 
+            pr.glucose, 
+            pr.blood_pressure, 
+            pr.skin_thickness, 
+            pr.insulin, 
+            pr.bmi, 
+            pr.diabetes_pedigree, 
+            pr.age, 
+            pr.prediction_result,
+            n.first_name AS nurse_first_name, 
+            n.last_name AS nurse_last_name
+        FROM predictions pr
+        JOIN patients p ON pr.patient_id = p.id
+        JOIN nurses n ON pr.nurse_id = n.id
+        # WHERE p.doctor_id = (SELECT id FROM doctors WHERE user_id = %s)
+        # ORDER BY pr.predicted_at DESC
+    """, (current_user.id,))
+    
+    predictions = cur.fetchall()
 
-    return render_template('doctor_dashboard.html', appointments=appointments)
+    cur.close()
+
+    return render_template('doctor_dashboard.html', appointments=appointments, predictions=predictions)
 
 
 from MySQLdb.cursors import DictCursor
