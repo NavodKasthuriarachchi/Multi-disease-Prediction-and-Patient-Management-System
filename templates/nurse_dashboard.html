@@ -132,6 +132,32 @@
 
         <button type="submit">Book Appointment</button>
     </form>
+
+    <h2>Upload Report for a Patient:</h2>
+        <form action="{{ url_for('upload_report') }}" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="patient_id" class="form-label">Select Patient</label>
+                <select class="form-select" id="patient_id" name="patient_id" required>
+                    {% for patient in patients %}
+                        <option value="{{ patient[0] }}">{{ patient[1] }} {{ patient[2] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="report_name" class="form-label">Report Name</label>
+                <input type="text" class="form-control" id="report_name" name="report_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="report_file" class="form-label">Choose File</label>
+                <input type="file" class="form-control" id="report_file" name="report_file" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Upload Report</button>
+        </form>
+
+    <a href="{{ url_for('nurse_dashboard') }}" class="btn btn-secondary mt-3">Cancel</a>
     
 </body>
 </html>

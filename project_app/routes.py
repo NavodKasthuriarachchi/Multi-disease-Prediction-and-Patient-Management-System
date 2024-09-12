@@ -11,6 +11,7 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from MySQLdb.cursors import DictCursor
+from flask import Flask, render_template, request, redirect, url_for, flash, current_app, jsonify
 
 # Home route
 @app.route('/')
@@ -535,8 +536,12 @@ def make_appointment(patient_id):
 
     cur = mysql.connection.cursor()
 
+    # Fetch the list of specializations
+    cur.execute("SELECT DISTINCT specialization FROM doctors")
+    specializations = [row[0] for row in cur.fetchall()]
+
     # Fetch the doctors list for the appointment form
-    cur.execute("SELECT id, first_name, last_name FROM doctors")
+    cur.execute("SELECT id, first_name, last_name, specialization FROM doctors")
     doctors = cur.fetchall()
 
     # If GET request, display the form
@@ -630,75 +635,92 @@ def allowed_file(filename):
 
 
 #upload Report...................................................................................................................................................................................................................................
-@app.route('/upload_report/<int:patient_id>', methods=['GET', 'POST'])
+@app.route('/upload_report', methods=['POST'])
 @login_required
-def upload_report(patient_id):
-    # Debugging: Print the received patient_id
-    print(f"Received patient_id: {patient_id}")  # This should be an integer
-
-    if current_user.role != 'doctor':
+def upload_report():
+    if current_user.role != 'nurse':
         flash('Unauthorized access!')
         return redirect(url_for('home'))
 
     cur = mysql.connection.cursor()
 
-    # Fetch patient details
-    if request.method == 'GET':
-        cur.execute("SELECT first_name, last_name FROM patients WHERE id = %s", (patient_id,))
-        patient = cur.fetchone()
-
-        if not patient:
-            flash('Patient not found.')
-            return redirect(url_for('doctor_dashboard'))
-
-        return render_template('upload_report.html', patient=patient)
-
-
-    # If POST request, handle file upload
     if request.method == 'POST':
-        # Check if the file is in the request
-        if 'report_file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-
+        # Get form data
+        patient_id = request.form.get('patient_id')
+        report_name = request.form.get('report_name')
         file = request.files['report_file']
 
-        # If no file is selected
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-
-        # Check if the file is allowed (PDF or image)
+        # Check if the file is allowed
         if file and allowed_file(file.filename):
+            # Secure the filename and save the file
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+            # Debugging - Print file path to ensure it's correct
+            print(f"File Path: {file_path}")
+
+            # Save the file
             file.save(file_path)
 
-            # Determine the file type (PDF or image)
-            file_type = 'pdf' if filename.lower().endswith('pdf') else 'image'
+            # Get the current nurse's ID and name
+            cur.execute("SELECT id, first_name, last_name FROM nurses WHERE user_id = %s", (current_user.id,))
+            nurse_data = cur.fetchone()
+            if not nurse_data:
+                flash('Nurse data not found!')
+                return redirect(url_for('nurse_dashboard'))
 
-            # Store the file path in the new report_uploads table
+            nurse_id, nurse_first_name, nurse_last_name = nurse_data
+
+            # Get the patient's name
+            cur.execute("SELECT first_name, last_name, doctor_id FROM patients WHERE id = %s", (patient_id,))
+            patient_data = cur.fetchone()
+            if not patient_data:
+                flash('Patient data not found!')
+                return redirect(url_for('nurse_dashboard'))
+
+            patient_first_name, patient_last_name, doctor_id = patient_data
+
+            # Get the doctor's name
+            cur.execute("SELECT first_name, last_name FROM doctors WHERE id = %s", (doctor_id,))
+            doctor_data = cur.fetchone()
+            if not doctor_data:
+                flash('Doctor data not found!')
+                return redirect(url_for('nurse_dashboard'))
+
+            doctor_first_name, doctor_last_name = doctor_data
+
+            # Insert the report details into the database
             cur.execute("""
-                INSERT INTO report_uploads (patient_id, doctor_id, file_path, file_type)
-                VALUES (%s, (SELECT id FROM doctors WHERE user_id = %s), %s, %s)
-            """, (patient_id, current_user.id, file_path, file_type))
+                INSERT INTO reports 
+                (report_name, file_path, patient_id, patient_first_name, patient_last_name, nurse_id, nurse_first_name, nurse_last_name, doctor_id, doctor_first_name, doctor_last_name, uploaded_at) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+            """, (report_name, file_path, patient_id, patient_first_name, patient_last_name, nurse_id, nurse_first_name, nurse_last_name, doctor_id, doctor_first_name, doctor_last_name))
+
             mysql.connection.commit()
             cur.close()
 
             flash('Report uploaded successfully!')
-            return redirect(url_for('doctor_dashboard'))
+            return redirect(url_for('nurse_dashboard'))
 
         else:
-            flash('Invalid file format. Please upload a PDF or an image.')
-            return redirect(request.url)
+            flash('Invalid file type. Please upload a valid file (PDF, DOC, DOCX, TXT).')
+            return redirect(url_for('nurse_dashboard'))
+
+    # Render the upload report form
+    cur.execute("SELECT id, first_name, last_name FROM patients WHERE nurse_id = (SELECT id FROM nurses WHERE user_id = %s)", (current_user.id,))
+    patients = cur.fetchall()
+    return render_template('nurse_dashboard.html', patients=patients)
+
+
+
         
         
 from flask import send_from_directory
 #Upload..........................................................................................................................................................................................................................................
-@app.route('/uploads/<filename>')
-@login_required
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+# @app.route('/uploads/<filename>')
+# @login_required
+# def uploaded_file(filename):
+#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 #Admin Dashboard...................................................................................................................................................................................................................................
 @app.route('/admin_dashboard')
 @login_required
@@ -801,4 +823,29 @@ def add_prescription(patient_id):
 
     return render_template('add_prescription.html', patient=patient)
 
+# Define the folder for storing uploads
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')  # This will create 'uploads' folder in the current working directory
 
+# Ensure the folder exists
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+# Add it to Flask config
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Set upload folder and allowed file extensions
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx', 'txt'}
+
+# Ensure the upload folder exists
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Utility function to check allowed file extensions
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
