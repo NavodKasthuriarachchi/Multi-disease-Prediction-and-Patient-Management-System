@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nurse Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ current_user.username }} (Nurse)</h1>
+
+        <!-- Button to trigger patient registration form -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerPatientModal">
+            Register New Patient
+        </button>
+
+        <h2>Patients Registered by You:</h2>
+        <ul>
+            {% if patients %}
+                {% for patient in patients %}
+                <li>
+                    Patient ID - {{ patient[0] }} ,Name - {{ patient[2] }} {{ patient[3] }} Age: {{ patient[4] }} - Contact: {{ patient[6] }}
+                    <!-- Update button -->
+                    <a href="{{ url_for('update_patient', patient_id=patient[0]) }}" class="btn btn-warning btn-sm">Update</a>
+                    <!-- Delete button -->
+                    <a href="{{ url_for('delete_patient', patient_id=patient[0]) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this patient?');">Delete</a>
+                    <!-- Make Appointment button -->
+                    <a href="{{ url_for('make_appointment', patient_id=patient[0]) }}" class="btn btn-primary btn-sm">Make an Appointment</a>
+                </li>
+                {% endfor %}
+            {% else %}
+                <li>No patients registered yet.</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Modal for Patient Registration -->
+    <div class="modal fade" id="registerPatientModal" tabindex="-1" aria-labelledby="registerPatientModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerPatientModalLabel">Register New Patient</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Patient Registration Form -->
+                    <form action="{{ url_for('register_patient') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact_number" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control" id="contact_number" name="contact_number" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Register Patient</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <h2>Predict Diabetes for a Patient:</h2>
+    <!-- Updated form to select a patient -->
+    <form action="{{ url_for('predict_diabetes') }}" method="POST">
+        <label for="patient_id">Select Patient:</label>
+        <select name="patient_id" required>
+            {% for patient in patients %}
+                <option value="{{ patient[0] }}">{{ patient[0] }} {{ patient[2] }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" required><br>
+
+        <label for="bmi">BMI:</label>
+        <input type="number" step="0.01" name="bmi" required><br>
+
+        <label for="glucose">Glucose Level:</label>
+        <input type="number" step="0.01" name="glucose" required><br>
+
+        <button type="submit">Predict Diabetes</button>
+    </form>
+
+    <h2>Make an Appointment:</h2>
+    <form action="{{ url_for('book_appointment') }}" method="POST">
+        <label for="doctor_id">Select Doctor:</label>
+        <select name="doctor_id" required>
+            {% for doctor in doctors %}
+                <option value="{{ doctor.id }}">{{ doctor.first_name }} {{ doctor.last_name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="appointment_date">Appointment Date:</label>
+        <input type="date" name="appointment_date" required><br>
+
+        <button type="submit">Book Appointment</button>
+    </form>
+    
+</body>
+</html>

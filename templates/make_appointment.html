@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make an Appointment</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Make an Appointment for {{ patient[1] }} {{ patient[2] }}</h1>
+
+        <form action="{{ url_for('make_appointment', patient_id=patient[0]) }}" method="POST">
+            <div class="mb-3">
+                <label for="doctor_id" class="form-label">Select Doctor</label>
+                <select class="form-select" id="doctor_id" name="doctor_id" required>
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor[0] }}">{{ doctor[1] }} {{ doctor[2] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="appointment_date" class="form-label">Appointment Date</label>
+                <input type="date" class="form-control" id="appointment_date" name="appointment_date" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="appointment_time" class="form-label">Appointment Time</label>
+                <input type="time" class="form-control" id="appointment_time" name="appointment_time" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="reason" class="form-label">Reason for Appointment</label>
+                <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+        </form>
+
+        <a href="{{ url_for('nurse_dashboard') }}" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+</body>
+</html>
+
+

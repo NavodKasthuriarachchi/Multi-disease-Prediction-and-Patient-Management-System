@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Report</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Report for Patient</h1>
+
+        <!-- Form to upload PDF or image files -->
+        <form action="{{ url_for('upload_report', patient_id=patient[0]) }}" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="report_file" class="form-label">Upload Report (PDF or Image)</label>
+                <input type="file" class="form-control" id="report_file" name="report_file" accept=".pdf,.jpg,.jpeg,.png" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Report</button>
+        </form>
+
+        <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+</body>
+</html>
+
+
+

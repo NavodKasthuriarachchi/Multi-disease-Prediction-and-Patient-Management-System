@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard</title>
+    
+</head>
+<body>
+    <h1>Welcome, {{ current_user.username }} (Doctor)</h1>
+
+            <!-- Search bar for patients -->
+            <h2>Search Patients</h2>
+            <form action="{{ url_for('search_patient') }}" method="POST">
+                <input type="text" name="search_query" placeholder="Enter patient name" required>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+    
+<!-- Display search results (if any) -->
+{% if patients %}
+    <h3>Search Results:</h3>
+    <ul>
+        {% for patient in patients %}
+        <li>
+            Patient ID: {{ patient[0] }} | Name: {{ patient[1] }} {{ patient[2] }} | Age: {{ patient[3] }} | Contact: {{ patient[4] }}
+            <!-- Button to upload reports -->
+            <a href="{{ url_for('upload_report', patient_id=patient[0]) }}" class="btn btn-secondary btn-sm">Upload Report</a>
+        </li>
+    {% endfor %}
+    
+    </ul>
+{% endif %}
+
+
+    <h2>Your Appointments:</h2>
+    <ul>
+        {% if appointments %}
+            {% for appointment in appointments %}
+                <li>
+                    <strong>Patient:</strong> {{ appointment[3] }} {{ appointment[4] }} (Age: {{ appointment[5] }}, Contact: {{ appointment[6] }})<br>
+                    <strong>Date:</strong> {{ appointment[0] }}<br>
+                    <strong>Time:</strong> {{ appointment[1] }}<br>
+                    <strong>Reason:</strong> {{ appointment[2] }}<br>
+                    
+                </li>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <li>No appointments available.</li>
+        {% endif %}
+    </ul>
+</div>
+
+<!-- Display uploaded reports for patients -->
+<h2>Uploaded Reports:</h2>
+<ul>
+    {% if reports %}
+        {% for report in reports %}
+            <li>
+                Report for {{ report.patient_name }}: 
+                <a href="{{ url_for('uploaded_file', filename=report.file_path) }}" target="_blank">View Report</a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <p>No reports uploaded yet.</p>
+    {% endif %}
+</ul>
+
+
+    <h2>View Patient Reports:</h2>
+    <ul>
+        {% for report in reports %}
+            <li>Patient: {{ report.patient_name }} - Diagnosis: {{ report.diagnosis }} - Prescription: {{ report.prescription }}</li>
+        {% else %}
+            <li>No reports available.</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+</body>
+</html>
