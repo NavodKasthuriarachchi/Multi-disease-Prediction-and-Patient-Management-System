@@ -26,6 +26,9 @@
                     <a href="{{ url_for('delete_patient', patient_id=patient[0]) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this patient?');">Delete</a>
                     <!-- Make Appointment button -->
                     <a href="{{ url_for('make_appointment', patient_id=patient[0]) }}" class="btn btn-primary btn-sm">Make an Appointment</a>
+                    <a href="{{ url_for('view_reports', patient_id=patient[0]) }}" class="btn btn-primary btn-sm">View Reports</a>
+
+
                 </li>
                 {% endfor %}
             {% else %}
@@ -33,6 +36,36 @@
             {% endif %}
         </ul>
     </div>
+    <div class="container">
+    <h2>Appointments Made by You:</h2>
+
+            <!-- Appointments Section -->
+            <!-- <h2>Your Patients' Appointments:</h2> -->
+            <ul>
+                {% if appointments %}
+                    {% for appointment in appointments %}
+                        <li>
+                            Appointment with Dr. {{ appointment[6] }} {{ appointment[7] }} for {{ appointment[4] }} {{ appointment[5] }} <br>
+                            Date: {{ appointment[1] }} Time: {{ appointment[2] }} <br>
+                            Reason: {{ appointment[3] }} <br>
+
+                            
+                        </li>
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <li>No appointments available.</li>
+                {% endif %}
+            </ul>
+        </div>
+    </body>
+    </html>
+    </div>
+    
+    
+</div>
+
+
 
     <!-- Modal for Patient Registration -->
     <div class="modal fade" id="registerPatientModal" tabindex="-1" aria-labelledby="registerPatientModalLabel" aria-hidden="true">
@@ -92,6 +125,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    
+    <div class="container">
     <h2>Predict Diabetes for a Patient:</h2>
     <!-- Updated form to select a patient -->
     <!-- <form action="{{ url_for('add_prediction') }}" method="POST">
@@ -115,10 +150,15 @@
     </form> -->
 
     <a href="{{ url_for('add_prediction') }}" class="btn btn-primary">Predict Diabetes</a>
+    </div>
+    <!-- Add Heart Disease Prediction Button -->
+    <div class="container">
+    <h2>Predict Heart Disease for a Patient:</h2>
+    <a href="{{ url_for('predict_heart_disease') }}" class="btn btn-info btn-lg">Predict Heart Disease</a>
+    </div>
 
 
-
-    <h2>Make an Appointment:</h2>
+    <!-- <h2>Make an Appointment:</h2>
     <form action="{{ url_for('book_appointment') }}" method="POST">
         <label for="doctor_id">Select Doctor:</label>
         <select name="doctor_id" required>
@@ -131,33 +171,40 @@
         <input type="date" name="appointment_date" required><br>
 
         <button type="submit">Book Appointment</button>
-    </form>
-
+    </form> -->
+    <div class="container">
     <h2>Upload Report for a Patient:</h2>
-        <form action="{{ url_for('upload_report') }}" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="patient_id" class="form-label">Select Patient</label>
-                <select class="form-select" id="patient_id" name="patient_id" required>
-                    {% for patient in patients %}
-                        <option value="{{ patient[0] }}">{{ patient[1] }} {{ patient[2] }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="report_name" class="form-label">Report Name</label>
-                <input type="text" class="form-control" id="report_name" name="report_name" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="report_file" class="form-label">Choose File</label>
-                <input type="file" class="form-control" id="report_file" name="report_file" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Upload Report</button>
-        </form>
-
-    <a href="{{ url_for('nurse_dashboard') }}" class="btn btn-secondary mt-3">Cancel</a>
+    <form action="{{ url_for('upload_report') }}" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="patient_id" class="form-label">Select Patient</label>
+            <select class="form-select" id="patient_id" name="patient_id" required>
+                {% for patient in patients %}
+                    <option value="{{ patient[0] }}">ID:{{ patient[0] }} | Name: {{ patient[2] }} {{ patient[3] }}</option>
+                {% endfor %}
+            </select>
+        </div>
     
+        <div class="mb-3">
+            <label for="doctor_id" class="form-label">Select Doctor</label>
+            <select class="form-select" id="doctor_id" name="doctor_id" required>
+                {% for doctor in doctors %}
+                    <option value="{{ doctor[0] }}">ID:{{ doctor[0] }} | Name: {{ doctor[1] }} {{ doctor[2] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="mb-3">
+            <label for="report_name" class="form-label">Report Name</label>
+            <input type="text" class="form-control" id="report_name" name="report_name" required>
+        </div>
+    
+        <div class="mb-3">
+            <label for="report_file" class="form-label">Upload Report (PDF/Image)</label>
+            <input type="file" class="form-control" id="report_file" name="report_file" required>
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Upload Report</button>
+    </form>
+    </div>
 </body>
 </html>

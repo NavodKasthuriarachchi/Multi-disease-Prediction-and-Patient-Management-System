@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
-from project_app import app
-from project_app.__init__ import mysql
-from project_app.models import User
+from project_app import app# type: ignore
+from project_app.__init__ import mysql# type: ignore
+from project_app.models import User # type: ignore
 import os
 import numpy as np 
 from flask import Flask, request, jsonify, render_template
@@ -12,6 +12,8 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from MySQLdb.cursors import DictCursor
 from flask import Flask, render_template, request, redirect, url_for, flash, current_app, jsonify
+import joblib
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Home route
 @app.route('/')
@@ -21,7 +23,9 @@ def home():
 
 # Load the diabetes prediction model.....................................................................................................................................................................................................................
 with open("J:/Final Project/multi_disease_system/project_app/diabetes.pkl", 'rb') as model_file:
-    diabetes_model = pickle.load(model_file)
+    model = pickle.load(model_file)
+with open("J:/Final Project/For edit/multi_disease_system/project_app/scaler.pkl", 'rb') as scaler_file:
+    scaler = pickle.load(scaler_file)
 
 # Route to display the prediction page
 # Route to display the prediction page
@@ -58,11 +62,14 @@ def add_prediction():
             # Prepare data for prediction
             input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree, age]])
 
+            # Scale the input data
+            input_data = scaler.transform(input_data)
+
             # Make prediction
-            prediction = diabetes_model.predict(input_data)
+            prediction = model.predict(input_data)
 
             # Interpret the prediction result
-            prediction_result = "likely" if prediction[0] == 1 else "unlikely"
+            prediction_result = "There is a risk of developing diabetes Diabetes" if prediction[0] == 1 else "There is NO risk of Diabetes"
 
             # Debugging: Print values to ensure all variables are correct
             print(f"patient_id: {patient_id}, nurse_id: {nurse_id}, pregnancies: {pregnancies}, glucose: {glucose}, blood_pressure: {blood_pressure}")
@@ -90,22 +97,123 @@ def add_prediction():
 
     # Render the prediction form
     return render_template('index.html', patients=patients)
+
+
+#predict heart disease...................................................................................................................................................................................................................................
+
+# Load the heart disease model (assuming the path is correct)
+heart_model_path = 'J:/Final Project/For edit/multi_disease_system/project_app/heart_disease_model.pkl'
+heart_model = joblib.load(heart_model_path)
+
+# Route to display the heart disease prediction page
+@app.route('/predict_heart', methods=['GET', 'POST'])
+@login_required  # Ensure only logged-in users can access
+def predict_heart_disease():
+    # Check if the current user is a nurse
+    if current_user.role != 'nurse':
+        flash('Unauthorized access! Only nurses can make predictions.')
+        return redirect(url_for('home'))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, first_name, last_name FROM patients")
+    patients = cur.fetchall()
+
+    if request.method == 'POST':
+        try:
+            # Retrieve form data
+            patient_id = request.form.get('patient_id')
+            age = float(request.form['age'])
+            gender = float(request.form['gender'])
+            heart_rate = float(request.form['heart_rate'])
+            systolic_bp = float(request.form['systolic_bp'])
+            diastolic_bp = float(request.form['diastolic_bp'])
+            blood_sugar = float(request.form['blood_sugar'])
+            ck_mb = float(request.form['ck_mb'])
+            troponin = float(request.form['troponin'])
+
+            # Get the actual nurse_id from the nurses table based on the current user's id
+            cur.execute("SELECT id FROM nurses WHERE user_id = %s", (current_user.id,))
+            nurse_data = cur.fetchone()
+
+            if not nurse_data:
+                flash('Error: Nurse record not found for the current user.')
+                return redirect(url_for('predict_heart_disease'))
+
+            nurse_id = nurse_data[0]  # Extract the nurse_id
+
+            # Prepare the data for prediction
+            input_data = np.array([[age, gender, heart_rate, systolic_bp, diastolic_bp, blood_sugar, ck_mb, troponin]])
+
+            # Make prediction using the heart disease model
+            prediction = heart_model.predict(input_data)
+            prediction_result = 'Positive for Heart Disease' if prediction[0] == 1 else 'Negative for Heart Disease'
+
+            # Insert the prediction into the 'heart_predictions' table
+            query = """
+                INSERT INTO heart_predictions 
+                (patient_id, nurse_id, age, gender, heart_rate, systolic_bp, diastolic_bp, blood_sugar, ck_mb, troponin, prediction_result)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            cur.execute(query, (patient_id, nurse_id, age, gender, heart_rate, systolic_bp, diastolic_bp, blood_sugar, ck_mb, troponin, prediction_result))
+            mysql.connection.commit()
+            cur.close()
+
+            # Flash a message and return the template with the prediction result
+            flash('Heart Disease prediction made and stored successfully!')
+            return render_template('predict_heart.html', prediction_result=prediction_result, patients=patients)
+
+        except Exception as e:
+            flash(f"Error in making prediction: {str(e)}")
+            return redirect(url_for('predict_heart_disease'))
+
+    return render_template('predict_heart.html', patients=patients)
+
+
+
 #Register Nurse...................................................................................................................................................................................................................................
+# @app.route('/register_nurse', methods=['GET', 'POST'])
+# def register_nurse():
+#     if request.method == 'POST':
+#         # Get form data
+#         username = request.form['username']
+#         password = request.form['password']
+#         email = request.form['email']
+#         first_name = request.form['first_name']
+#         last_name = request.form['last_name']
+#         contact_number = request.form['contact_number']
+        
+#         # Insert user into `users` table
+#         cur = mysql.connection.cursor()
+#         cur.execute("INSERT INTO users (username, password, email, role) VALUES (%s, %s, %s, 'nurse')", 
+#                     (username, password, email))
+#         user_id = cur.lastrowid  # Get the user_id of the inserted user
+        
+#         # Insert nurse details into `nurses` table
+#         cur.execute("INSERT INTO nurses (user_id, first_name, last_name, contact_number) VALUES (%s, %s, %s, %s)", 
+#                     (user_id, first_name, last_name, contact_number))
+#         mysql.connection.commit()
+#         cur.close()
+
+#         flash('Nurse registered successfully!')
+#         return redirect(url_for('login'))
+
+#     return render_template('register_nurse.html')
 @app.route('/register_nurse', methods=['GET', 'POST'])
 def register_nurse():
     if request.method == 'POST':
         # Get form data
         username = request.form['username']
-        password = request.form['password']
+        password = request.form['password']  # User's input password
+        hashed_password = generate_password_hash(password)  # Hash the password
         email = request.form['email']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         contact_number = request.form['contact_number']
         
-        # Insert user into `users` table
+        # Insert user into `users` table with hashed password
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (username, password, email, role) VALUES (%s, %s, %s, 'nurse')", 
-                    (username, password, email))
+                    (username, hashed_password, email))  # Store the hashed password
         user_id = cur.lastrowid  # Get the user_id of the inserted user
         
         # Insert nurse details into `nurses` table
@@ -118,8 +226,39 @@ def register_nurse():
         return redirect(url_for('login'))
 
     return render_template('register_nurse.html')
-
 #Register Doctor...................................................................................................................................................................................................................................
+# @app.route('/register_doctor', methods=['GET', 'POST'])
+# def register_doctor():
+#     if request.method == 'POST':
+#         # Get form data
+#         username = request.form['username']
+#         password = request.form['password']
+#         email = request.form['email']
+#         first_name = request.form['first_name']
+#         last_name = request.form['last_name']
+#         specialization = request.form['specialization']
+#         contact_number = request.form['contact_number']
+        
+#         # Insert user into `users` table
+#         cur = mysql.connection.cursor()
+#         cur.execute("INSERT INTO users (username, password, email, role) VALUES (%s, %s, %s, 'doctor')", 
+#                     (username, password, email))
+#         user_id = cur.lastrowid
+        
+#         # Insert doctor details into `doctors` table
+#         cur.execute("INSERT INTO doctors (user_id, first_name, last_name, specialization, contact_number) VALUES (%s, %s, %s, %s, %s)", 
+#                     (user_id, first_name, last_name, specialization, contact_number))
+#         mysql.connection.commit()
+#         cur.close()
+
+#         flash('Doctor registered successfully!')
+#         return redirect(url_for('login'))
+
+#     return render_template('register_doctor.html')
+
+from werkzeug.security import generate_password_hash
+import re
+
 @app.route('/register_doctor', methods=['GET', 'POST'])
 def register_doctor():
     if request.method == 'POST':
@@ -131,11 +270,38 @@ def register_doctor():
         last_name = request.form['last_name']
         specialization = request.form['specialization']
         contact_number = request.form['contact_number']
-        
-        # Insert user into `users` table
+
+        # Validations
+
+        # Check if any required field is missing
+        if not username or not password or not email or not first_name or not last_name or not specialization or not contact_number:
+            flash('All fields are required!')
+            return redirect(url_for('register_doctor'))
+
+        # Validate email format
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            flash('Invalid email format!')
+            return redirect(url_for('register_doctor'))
+
+        # Validate password length and complexity (at least 8 characters, including a number and a special character)
+        if len(password) < 8 or not re.search(r"\d", password) or not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+            flash('Password must be at least 8 characters long and include a number and a special character!')
+            return redirect(url_for('register_doctor'))
+
+        # Check if username already exists
         cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        existing_user = cur.fetchone()
+        if existing_user:
+            flash('Username already exists! Please choose another one.')
+            return redirect(url_for('register_doctor'))
+
+        # Hash the password before storing it
+        hashed_password = generate_password_hash(password)
+
+        # Insert user into `users` table
         cur.execute("INSERT INTO users (username, password, email, role) VALUES (%s, %s, %s, 'doctor')", 
-                    (username, password, email))
+                    (username, hashed_password, email))
         user_id = cur.lastrowid
         
         # Insert doctor details into `doctors` table
@@ -148,7 +314,60 @@ def register_doctor():
         return redirect(url_for('login'))
 
     return render_template('register_doctor.html')
+
 #Register patient...................................................................................................................................................................................................................................
+# @app.route('/register_patient', methods=['POST'])
+# @login_required
+# def register_patient():
+#     if current_user.role != 'nurse':
+#         flash('Unauthorized access!')
+#         return redirect(url_for('home'))
+
+#     # Get form data for the patient
+#     first_name = request.form['first_name']
+#     last_name = request.form['last_name']
+#     age = request.form['age']
+#     gender = request.form['gender']
+#     contact_number = request.form['contact_number']
+#     username = request.form['username']  # Add a username field for patient registration
+#     password = request.form['password']  # Add a password field for patient registration
+#     email = request.form['email']  # Add an email field for patient registration
+
+#     # Insert the new patient into the users table first, with role as 'patient'
+#     cur = mysql.connection.cursor()
+#     cur.execute(
+#         "INSERT INTO users (username, password, email, role) VALUES (%s, %s, %s, 'patient')",
+#         (username, password, email)
+#     )
+#     mysql.connection.commit()
+
+#     # Get the user_id of the newly inserted patient
+#     user_id = cur.lastrowid
+
+#     # Fetch the nurse's id from the nurses table using the current user's id
+#     cur.execute("SELECT id FROM nurses WHERE user_id = %s", (current_user.id,))
+#     nurse_data = cur.fetchone()
+
+#     if not nurse_data:
+#         flash('Nurse not found!')
+#         return redirect(url_for('nurse_dashboard'))
+
+#     nurse_id = nurse_data[0]  # Extract the nurse's id
+
+#     # Insert the new patient into the patients table, linking with the user_id and nurse_id
+#     cur.execute(
+#         "INSERT INTO patients (user_id, first_name, last_name, age, gender, contact_number, nurse_id) "
+#         "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+#         (user_id, first_name, last_name, age, gender, contact_number, nurse_id)
+#     )
+#     mysql.connection.commit()
+#     cur.close()
+
+#     flash('Patient registered successfully!')
+#     return redirect(url_for('nurse_dashboard'))
+
+from werkzeug.security import generate_password_hash
+
 @app.route('/register_patient', methods=['POST'])
 @login_required
 def register_patient():
@@ -166,11 +385,14 @@ def register_patient():
     password = request.form['password']  # Add a password field for patient registration
     email = request.form['email']  # Add an email field for patient registration
 
+    # Hash the patient's password before storing it
+    hashed_password = generate_password_hash(password)
+
     # Insert the new patient into the users table first, with role as 'patient'
     cur = mysql.connection.cursor()
     cur.execute(
         "INSERT INTO users (username, password, email, role) VALUES (%s, %s, %s, 'patient')",
-        (username, password, email)
+        (username, hashed_password, email)  # Store the hashed password
     )
     mysql.connection.commit()
 
@@ -198,7 +420,6 @@ def register_patient():
 
     flash('Patient registered successfully!')
     return redirect(url_for('nurse_dashboard'))
-
 
 
     # if request.method == 'POST':
@@ -273,11 +494,73 @@ def login():
 
 
 # Logout route
+# @app.route('/logout')
+# @login_required
+# def logout():
+#     logout_user()
+#     return redirect(url_for('login'))
+
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+        
+#         # Fetch user data from the database
+#         cur = mysql.connection.cursor()
+#         cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+#         user_data = cur.fetchone()
+#         cur.close()
+
+#         # Debugging: Print the user data fetched from the database
+#         print(f"User Data: {user_data}")
+
+#         # Assuming the database order is: id, username, password (hashed), email, role, created_at
+#         if user_data:
+#             # Debugging: Print the role and password data
+#             print(f"Stored Hashed Password: {user_data[2]}")
+#             print(f"Role: {user_data[4]}")
+
+#             # Verify the password using check_password_hash
+#             if check_password_hash(user_data[2], password):
+#                 # Pass only id, username, and role to the User constructor (ignore created_at)
+#                 user = User(user_data[0], user_data[1], user_data[2], user_data[4])
+#                 login_user(user)
+
+#                 print(f"Logged in as {user.username}, Role: {user.role}")
+
+#                 # After login, check the role from current_user object and redirect accordingly
+#                 if user.role == 'patient':
+#                     return redirect(url_for('patient_dashboard'))
+#                 elif user.role == 'doctor':
+#                     return redirect(url_for('doctor_dashboard'))
+#                 elif user.role == 'nurse':
+#                     return redirect(url_for('nurse_dashboard'))
+#                 elif user.role == 'admin':
+#                     return redirect(url_for('admin_dashboard'))
+#                 else:
+#                     flash(f"Unknown role: {user.role}!")
+#                     return redirect(url_for('login'))
+
+#             else:
+#                 flash('Invalid password')
+#                 print("Password check failed")  # Debugging: Password verification failed
+#                 return redirect(url_for('login'))
+#         else:
+#             flash('Invalid username')
+#             print("Username not found")  # Debugging: No user found for this username
+#             return redirect(url_for('login'))
+
+#     return render_template('login.html')
+
+
+# Logout route
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
 
 # .................................................................................................................................Load your prediction model (e.g., for diabetes)
 # model = pickle.load(open('diabetes_model.pkl', 'rb'))
@@ -299,14 +582,35 @@ def nurse_dashboard():
         flash('Nurse not found!')
         return redirect(url_for('home'))
 
-    nurse_id = nurse_data[0]  # Extract the nurse's id
+    nurse_id = nurse_data[0]
 
     # Fetch the patients registered by this nurse
     cur.execute("SELECT * FROM patients WHERE nurse_id = %s", (nurse_id,))
     patients = cur.fetchall()
 
-    # Pass the patients data to the template
-    return render_template('nurse_dashboard.html', patients=patients)
+    # Fetch the list of doctors
+    cur.execute("SELECT id, first_name, last_name FROM doctors")
+    doctors = cur.fetchall()
+
+
+    # Fetch the appointments made by the nurse's patients
+    cur.execute("""
+    SELECT 
+        a.id, a.appointment_date, a.appointment_time, a.reason, 
+        p.first_name, p.last_name, d.first_name, d.last_name
+    FROM appointments a
+    JOIN patients p ON a.patient_id = p.id
+    JOIN doctors d ON a.doctor_id = d.id
+    WHERE p.nurse_id = %s
+    ORDER BY a.appointment_date, a.appointment_time
+    """, (nurse_id,))
+    appointments = cur.fetchall()
+
+
+    # Pass both patients and appointments to the template
+    print(appointments)
+    return render_template('nurse_dashboard.html', patients=patients, appointments=appointments, doctors=doctors)
+
 
 
 # Doctor Dashboard...................................................................................................................................................................................................................................
@@ -363,9 +667,35 @@ def doctor_dashboard():
     
     predictions = cur.fetchall()
 
+     # Fetch the heart disease prediction data for the patients
+    cur.execute("""
+        SELECT 
+            p.first_name AS patient_first_name, 
+            p.last_name AS patient_last_name, 
+            hp.age, 
+            hp.gender, 
+            hp.heart_rate, 
+            hp.systolic_bp, 
+            hp.diastolic_bp, 
+            hp.blood_sugar, 
+            hp.ck_mb, 
+            hp.troponin, 
+            hp.prediction_result,
+            n.first_name AS nurse_first_name, 
+            n.last_name AS nurse_last_name
+        FROM heart_predictions hp
+        JOIN patients p ON hp.patient_id = p.id
+        JOIN nurses n ON hp.nurse_id = n.id
+    """)
+    heart_disease_predictions = cur.fetchall()
+
     cur.close()
 
-    return render_template('doctor_dashboard.html', appointments=appointments, predictions=predictions)
+    return render_template('doctor_dashboard.html', appointments=appointments, predictions=predictions, heart_disease_predictions=heart_disease_predictions)
+
+#Download Report...................................................................................................................................................................................................................................
+
+
 
 
 from MySQLdb.cursors import DictCursor
@@ -618,8 +948,8 @@ def search_patient():
 
     return render_template('doctor_dashboard.html', patients=patients, appointments=appointments)
 
-
-# Define where to save uploaded files (PDFs or images)
+#Upload Reports..............................................................................................................................................................................................................................................
+# Define where to save uploaded files (e.g., reports)
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 
@@ -629,12 +959,10 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Function to check if the uploaded file is allowed (PDF or image)
+# Utility function to check if the uploaded file type is allowed
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-#upload Report...................................................................................................................................................................................................................................
 @app.route('/upload_report', methods=['POST'])
 @login_required
 def upload_report():
@@ -642,78 +970,144 @@ def upload_report():
         flash('Unauthorized access!')
         return redirect(url_for('home'))
 
+    if 'report_file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+
+    file = request.files['report_file']
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+
+    if file and allowed_file(file.filename):
+        # Secure the filename and save the file
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+
+        # Get form data
+        patient_id = request.form['patient_id']
+        doctor_id = request.form['doctor_id']
+        report_name = request.form['report_name']
+
+         # Fetch the nurse_id based on the current user's user_id
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id FROM nurses WHERE user_id = %s", (current_user.id,))
+        nurse_data = cur.fetchone()
+
+        if not nurse_data:
+            flash('Nurse not found!')
+            return redirect(url_for('nurse_dashboard'))
+
+        nurse_id = nurse_data[0]  # Extract nurse_id
+
+         # Insert the report details into the database
+        cur.execute("""
+            INSERT INTO reports (report_name, file_path, patient_id, nurse_id, doctor_id) 
+            VALUES (%s, %s, %s, %s, %s)
+        """, (report_name, file_path, patient_id, nurse_id, doctor_id))
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Report uploaded successfully!')
+        return redirect(url_for('nurse_dashboard'))
+
+    flash('Invalid file type. Please upload a PDF or an image.')
+    return redirect(url_for('nurse_dashboard'))
+
+#View reports..........................................................................................................................................................................................................................................
+@app.route('/view_reports/<int:patient_id>')
+@login_required
+def view_reports(patient_id):
+    if current_user.role not in ['nurse', 'doctor', 'patient']:
+        flash('Unauthorized access!')
+        return redirect(url_for('home'))
+
+    # Fetch reports for the specified patient
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT r.report_name, r.file_path, r.created_at, n.first_name, n.last_name, d.first_name, d.last_name
+        FROM reports r
+        JOIN nurses n ON r.nurse_id = n.id
+        JOIN doctors d ON r.doctor_id = d.id
+        WHERE r.patient_id = %s
+    """, (patient_id,))
+    reports = cur.fetchall()
+    cur.close()
+
+    return render_template('view_reports.html', reports=reports)
+
+#Delete reports..........................................................................................................................................................................................................................................
+@app.route('/delete_report/<int:report_id>', methods=['GET'])
+@login_required
+def delete_report(report_id):
+    if current_user.role != 'nurse':
+        flash('Unauthorized access!')
+        return redirect(url_for('home'))
+
+    cur = mysql.connection.cursor()
+
+    # Delete the report from the database
+    cur.execute("DELETE FROM reports WHERE id = %s", (report_id,))
+    mysql.connection.commit()
+    cur.close()
+
+    flash('Report deleted successfully!')
+    return redirect(url_for('nurse_dashboard'))
+
+#Edit report..........................................................................................................................................................................................................................................
+@app.route('/edit_report/<int:report_id>', methods=['GET', 'POST'])
+@login_required
+def edit_report(report_id):
+    if current_user.role != 'nurse':
+        flash('Unauthorized access!')
+        return redirect(url_for('home'))
+
     cur = mysql.connection.cursor()
 
     if request.method == 'POST':
-        # Get form data
-        patient_id = request.form.get('patient_id')
-        report_name = request.form.get('report_name')
+        # Get the updated form data
+        report_name = request.form['report_name']
         file = request.files['report_file']
 
-        # Check if the file is allowed
+        # If a new file is uploaded, save the file
         if file and allowed_file(file.filename):
-            # Secure the filename and save the file
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
-            # Debugging - Print file path to ensure it's correct
-            print(f"File Path: {file_path}")
-
-            # Save the file
             file.save(file_path)
 
-            # Get the current nurse's ID and name
-            cur.execute("SELECT id, first_name, last_name FROM nurses WHERE user_id = %s", (current_user.id,))
-            nurse_data = cur.fetchone()
-            if not nurse_data:
-                flash('Nurse data not found!')
-                return redirect(url_for('nurse_dashboard'))
-
-            nurse_id, nurse_first_name, nurse_last_name = nurse_data
-
-            # Get the patient's name
-            cur.execute("SELECT first_name, last_name, doctor_id FROM patients WHERE id = %s", (patient_id,))
-            patient_data = cur.fetchone()
-            if not patient_data:
-                flash('Patient data not found!')
-                return redirect(url_for('nurse_dashboard'))
-
-            patient_first_name, patient_last_name, doctor_id = patient_data
-
-            # Get the doctor's name
-            cur.execute("SELECT first_name, last_name FROM doctors WHERE id = %s", (doctor_id,))
-            doctor_data = cur.fetchone()
-            if not doctor_data:
-                flash('Doctor data not found!')
-                return redirect(url_for('nurse_dashboard'))
-
-            doctor_first_name, doctor_last_name = doctor_data
-
-            # Insert the report details into the database
+            # Update the report details along with the file path
             cur.execute("""
-                INSERT INTO reports 
-                (report_name, file_path, patient_id, patient_first_name, patient_last_name, nurse_id, nurse_first_name, nurse_last_name, doctor_id, doctor_first_name, doctor_last_name, uploaded_at) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-            """, (report_name, file_path, patient_id, patient_first_name, patient_last_name, nurse_id, nurse_first_name, nurse_last_name, doctor_id, doctor_first_name, doctor_last_name))
-
-            mysql.connection.commit()
-            cur.close()
-
-            flash('Report uploaded successfully!')
-            return redirect(url_for('nurse_dashboard'))
-
+                UPDATE reports 
+                SET report_name = %s, file_path = %s
+                WHERE id = %s
+            """, (report_name, file_path, report_id))
         else:
-            flash('Invalid file type. Please upload a valid file (PDF, DOC, DOCX, TXT).')
-            return redirect(url_for('nurse_dashboard'))
+            # Update the report name only
+            cur.execute("""
+                UPDATE reports 
+                SET report_name = %s
+                WHERE id = %s
+            """, (report_name, report_id))
 
-    # Render the upload report form
-    cur.execute("SELECT id, first_name, last_name FROM patients WHERE nurse_id = (SELECT id FROM nurses WHERE user_id = %s)", (current_user.id,))
-    patients = cur.fetchall()
-    return render_template('nurse_dashboard.html', patients=patients)
+        mysql.connection.commit()
+        cur.close()
 
+        flash('Report updated successfully!')
+        return redirect(url_for('nurse_dashboard'))
 
+    # Fetch the current report details for editing
+    cur.execute("SELECT * FROM reports WHERE id = %s", (report_id,))
+    report = cur.fetchone()
 
-        
+    if not report:
+        flash('Report not found!')
+        return redirect(url_for('nurse_dashboard'))
+
+    cur.close()
+
+    return render_template('edit_report.html', report=report)
+      
         
 from flask import send_from_directory
 #Upload..........................................................................................................................................................................................................................................
@@ -849,3 +1243,107 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Utility function to check allowed file extensions
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+#Edit Appointment:........................................................................................................................................................................................................................
+
+# @app.route('/edit_appointment/<int:appointment_id>', methods=['GET', 'POST'])
+# @login_required
+# def edit_appointment(appointment_id):
+#     if current_user.role != 'nurse':
+#         flash('Unauthorized access!')
+#         return redirect(url_for('home'))
+
+#     cur = mysql.connection.cursor()
+
+#     if request.method == 'POST':
+#         appointment_date = request.form['appointment_date']
+#         appointment_time = request.form['appointment_time']
+#         reason = request.form['reason']
+
+#         cur.execute("""
+#             UPDATE appointments 
+#             SET appointment_date = %s, appointment_time = %s, reason = %s 
+#             WHERE id = %s
+#         """, (appointment_date, appointment_time, reason, appointment_id))
+#         mysql.connection.commit()
+
+#         flash('Appointment updated successfully!')
+#         return redirect(url_for('nurse_dashboard'))
+
+#     # Fetch current appointment details
+#     cur.execute("SELECT * FROM appointments WHERE id = %s", (appointment_id,))
+#     appointment = cur.fetchone()
+
+#     return render_template('edit_appointment.html', appointment=appointment)
+
+
+
+
+#Delete Appointment..
+
+# @app.route('/delete_appointment/<int:appointment_id>')
+# @login_required
+# def delete_appointment(appointment_id):
+#     if current_user.role != 'nurse':
+#         flash('Unauthorized access!')
+#         return redirect(url_for('home'))
+
+#     cur = mysql.connection.cursor()
+
+#     # Delete the appointment
+#     cur.execute("DELETE FROM appointmets WHERE id = %s AND nurse_id = (SELECT id FROM nurses WHERE user_id = %s)", (appointment_id, current_user.id))
+#     mysql.connection.commit()
+
+#     flash('Appointment deleted successfully!')
+#     return redirect(url_for('nurse_dashboard'))
+
+
+#patient Profile.................................................................................................................................................................................................................................................
+
+# @app.route('/patient_profile/<int:patient_id>')
+# @login_required
+# def patient_profile(patient_id):
+#     # Check if the user has access to this patient (nurse, doctor, or the patient themselves)
+#     if current_user.role not in ['nurse', 'doctor', 'patient']:
+#         flash('Unauthorized access!')
+#         return redirect(url_for('home'))
+
+#     cur = mysql.connection.cursor()
+
+#     # Fetch the patient details
+#     cur.execute("SELECT * FROM patients WHERE id = %s", (patient_id,))
+#     patient = cur.fetchone()
+
+#     if not patient:
+#         flash('Patient not found!')
+#         return redirect(url_for('home'))
+
+#     # Fetch the patient's reports
+#     cur.execute("""
+#         SELECT r.report_name, r.file_path, r.created_at, 
+#                n.first_name AS nurse_first_name, n.last_name AS nurse_last_name,
+#                d.first_name AS doctor_first_name, d.last_name AS doctor_last_name
+#         FROM reports r
+#         JOIN nurses n ON r.nurse_id = n.id
+#         JOIN doctors d ON r.doctor_id = d.id
+#         WHERE r.patient_id = %s
+#         ORDER BY r.created_at DESC
+#     """, (patient_id,))
+#     reports = cur.fetchall()
+
+#     # Fetch the patient's appointments
+#     cur.execute("""
+#         SELECT a.appointment_date, a.appointment_time, a.reason, 
+#                d.first_name AS doctor_first_name, d.last_name AS doctor_last_name
+#         FROM appointments a
+#         JOIN doctors d ON a.doctor_id = d.id
+#         WHERE a.patient_id = %s
+#         ORDER BY a.appointment_date, a.appointment_time
+#     """, (patient_id,))
+#     appointments = cur.fetchall()
+
+#     cur.close()
+
+#     return render_template('patient_profile.html', patient=patient, reports=reports, appointments=appointments)
+
+
