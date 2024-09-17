@@ -3,17 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Make an Appointment</title>
+    <script>
+        function filterDoctors() {
+            const specialization = document.getElementById('specialization').value;
+            const doctors = document.querySelectorAll('#doctor_id option');
+            
+            doctors.forEach(doctor => {
+                const doctorSpecialization = doctor.getAttribute('data-specialization');
+                if (specialization === '' || doctorSpecialization === specialization) {
+                    doctor.style.display = 'block';
+                } else {
+                    doctor.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Make an Appointment for {{ patient[1] }} {{ patient[2] }}</h1>
 
         <form action="{{ url_for('make_appointment', patient_id=patient[0]) }}" method="POST">
+            <!-- Specialization Dropdown -->
+            <!-- <div class="mb-3">
+                <label for="specialization" class="form-label">Select Specialization</label>
+                <select class="form-select" id="specialization" name="specialization" onchange="filterDoctors()" required>
+                    <option value="">-- Select Specialization --</option>
+                    {% for specialization in specializations %}
+                        <option value="{{ specialization }}">{{ specialization }}</option>
+                    {% endfor %}
+                </select>
+            </div> -->
+
+            <!-- Doctor Dropdown -->
             <div class="mb-3">
                 <label for="doctor_id" class="form-label">Select Doctor</label>
                 <select class="form-select" id="doctor_id" name="doctor_id" required>
                     {% for doctor in doctors %}
-                        <option value="{{ doctor[0] }}">{{ doctor[1] }} {{ doctor[2] }}</option>
+                        <option value="{{ doctor[0] }}" data-specialization="{{ doctor[3] }}">
+                            {{ doctor[1] }} {{ doctor[2] }} ({{ doctor[3] }})
+                        </option>
                     {% endfor %}
                 </select>
             </div>
@@ -40,5 +69,3 @@
     </div>
 </body>
 </html>
-
-

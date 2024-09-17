@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+</head>
+<body>
+    <h2>Heart Disease Prediction</h2>
+    <form action="/predict" method="POST">
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required><br><br>
+
+        <label for="gender">Gender (1 for Male, 0 for Female):</label>
+        <input type="text" id="gender" name="gender" required><br><br>
+
+        <label for="heart_rate">Heart Rate:</label>
+        <input type="text" id="heart_rate" name="heart_rate" required><br><br>
+
+        <label for="systolic_bp">Systolic Blood Pressure:</label>
+        <input type="text" id="systolic_bp" name="systolic_bp" required><br><br>
+
+        <label for="diastolic_bp">Diastolic Blood Pressure:</label>
+        <input type="text" id="diastolic_bp" name="diastolic_bp" required><br><br>
+
+        <label for="blood_sugar">Blood Sugar:</label>
+        <input type="text" id="blood_sugar" name="blood_sugar" required><br><br>
+
+        <label for="ck_mb">CK-MB:</label>
+        <input type="text" id="ck_mb" name="ck_mb" required><br><br>
+
+        <label for="troponin">Troponin:</label>
+        <input type="text" id="troponin" name="troponin" required><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction_result %}
+        <h3>Prediction Result: {{ prediction_result }}</h3>
+    {% endif %}
+</body>
+</html>
