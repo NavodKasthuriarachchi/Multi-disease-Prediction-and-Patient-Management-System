@@ -51,3 +51,29 @@
     </div>
 </body>
 </html>
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Prescription</title>
+</head>
+<body>
+    <h2>Add Prescription for {{ patient.first_name }} {{ patient.last_name }}</h2>
+
+    <form action="{{ url_for('add_prescription', patient_id=patient.id) }}" method="POST" enctype="multipart/form-data">
+        <label for="diagnosis">Diagnosis:</label>
+        <input type="text" id="diagnosis" name="diagnosis" required><br><br>
+
+        <label for="prescription">Prescription Details:</label>
+        <textarea id="prescription" name="prescription" required></textarea><br><br>
+
+        <label for="file">Upload File (Optional):</label>
+        <input type="file" id="file" name="file"><br><br>
+
+        <button type="submit">Add Prescription</button>
+    </form>
+
+    <a href="{{ url_for('doctor_dashboard') }}">Back to Dashboard</a>
+</body>
+</html> -->

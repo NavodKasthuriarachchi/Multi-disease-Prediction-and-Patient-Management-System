@@ -1,0 +1,43 @@
+        <script>
+        var products = [
+            { id: 1, name: 'Product 1', category: 'electronics' },
+            { id: 2, name: 'Product 2', category: 'clothing' },
+            // Add more product data with categories
+        ];
+
+        // Function to display products based on category
+        function filterCategory(category) {
+            var productsContainer = document.querySelector('.products-container');
+            productsContainer.innerHTML = ''; // Clear previous products
+
+            if (category === 'all') {
+                displayAllProducts();
+            } else {
+                var filteredProducts = products.filter(function(product) {
+                    return product.category === category;
+                });
+                displayProducts(filteredProducts);
+            }
+        }
+
+        // Function to display all products
+        function displayAllProducts() {
+            displayProducts(products);
+        }
+
+        // Function to display filtered products
+        function displayProducts(filteredProducts) {
+            var productsContainer = document.querySelector('.products-container');
+
+            filteredProducts.forEach(function(product) {
+                // Display product details using HTML
+                var productDiv = document.createElement('div');
+                productDiv.classList.add('product');
+                productDiv.textContent = 'Product ID: ' + product.id + ', Name: ' + product.name + ', Category: ' + product.category;
+                productsContainer.appendChild(productDiv);
+            });
+        }
+
+        // Initial display of all products
+        displayAllProducts();
+    </script>

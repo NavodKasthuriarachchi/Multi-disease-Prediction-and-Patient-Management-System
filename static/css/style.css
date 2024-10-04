@@ -1,0 +1,1879 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #0c0c0c;
+  background-color: #ffffff;
+  overflow-x: hidden;
+}
+
+.layout_padding {
+  padding: 90px 0;
+}
+
+.layout_padding2 {
+  padding: 75px 0;
+}
+
+.layout_padding2-top {
+  padding-top: 75px;
+}
+
+.layout_padding2-bottom {
+  padding-bottom: 75px;
+}
+
+.layout_padding-top {
+  padding-top: 90px;
+}
+
+.layout_padding-bottom {
+  padding-bottom: 90px;
+}
+
+.heading_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.heading_container h2 {
+  position: relative;
+  font-weight: bold;
+}
+
+.heading_container h2 span {
+  color: #00c6a9;
+}
+
+.heading_container.heading_center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: initial;
+}
+
+.btn,
+.btn:focus {
+  outline: none !important;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+/*header section*/
+.hero_area {
+  position: relative;
+}
+
+.sub_page .hero_area {
+  height: auto;
+}
+
+.sub_page .header_section {
+  margin-top: 0;
+}
+
+.header_section .header_top {
+  padding: 15px 0;
+}
+
+.header_section .header_top .contact_nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.header_section .header_top .contact_nav a {
+  margin-right: 25px;
+  color: #555555;
+}
+
+.header_section .header_top .contact_nav a i {
+  color: #00c6a9;
+}
+
+.header_section .header_bottom {
+  background-color: #00c6a9;
+}
+
+.header_section .header_bottom .container-fluid {
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+.navbar-brand {
+  background-color: #ffffff;
+  padding: 15px 35px;
+}
+
+.navbar-brand img {
+  width: 55px;
+}
+
+.custom_nav-container {
+  padding: 0;
+}
+
+.custom_nav-container .navbar-nav .nav-item .nav-link {
+  padding: 3px 15px;
+  margin: 10px 15px;
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.custom_nav-container .navbar-nav .nav-item:hover .nav-link {
+  color: #252525;
+}
+
+.custom_nav-container .nav_search-btn {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  border: none;
+  color: #ffffff;
+}
+
+.custom_nav-container .nav_search-btn:hover {
+  color: #252525;
+}
+
+.custom_nav-container .navbar-toggler {
+  outline: none;
+}
+
+.custom_nav-container .navbar-toggler {
+  padding: 0;
+  width: 37px;
+  height: 42px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+.custom_nav-container .navbar-toggler span {
+  display: block;
+  width: 35px;
+  height: 4px;
+  background-color: #ffffff;
+  margin: 7px 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  position: relative;
+  border-radius: 5px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+.custom_nav-container .navbar-toggler span::before, .custom_nav-container .navbar-toggler span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  top: -10px;
+  border-radius: 5px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+.custom_nav-container .navbar-toggler span::after {
+  top: 10px;
+}
+
+.custom_nav-container .navbar-toggler[aria-expanded="true"] {
+  -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+}
+
+.custom_nav-container .navbar-toggler[aria-expanded="true"] span {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+.custom_nav-container .navbar-toggler[aria-expanded="true"] span::before, .custom_nav-container .navbar-toggler[aria-expanded="true"] span::after {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  top: 0;
+}
+
+.custom_nav-container .navbar-toggler[aria-expanded="true"] .s-1 {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  margin: 0;
+  margin-bottom: -4px;
+}
+
+.custom_nav-container .navbar-toggler[aria-expanded="true"] .s-2 {
+  display: none;
+}
+
+.custom_nav-container .navbar-toggler[aria-expanded="true"] .s-3 {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  margin: 0;
+  margin-top: -4px;
+}
+
+.custom_nav-container .navbar-toggler[aria-expanded="false"] .s-1,
+.custom_nav-container .navbar-toggler[aria-expanded="false"] .s-2,
+.custom_nav-container .navbar-toggler[aria-expanded="false"] .s-3 {
+  -webkit-transform: none;
+          transform: none;
+}
+
+.quote_btn-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.quote_btn-container a {
+  color: #ffffff;
+  margin-right: 25px;
+  text-transform: uppercase;
+}
+
+.quote_btn-container a span {
+  margin-left: 5px;
+}
+
+.quote_btn-container a:hover {
+  color: #252525;
+}
+
+/*end header section*/
+/* slider section */
+.slider_section {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+          box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+  padding-top: 45px;
+  padding-bottom: 75px;
+}
+
+.slider_section .dot_design {
+  position: absolute;
+  width: 450px;
+  right: 0;
+  bottom: 0;
+  -webkit-transform: translateY(50%);
+          transform: translateY(50%);
+  z-index: 1;
+}
+
+.slider_section .dot_design img {
+  width: 100%;
+}
+
+.slider_section .row {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.slider_section #customCarousel1 {
+  width: 100%;
+  position: unset;
+}
+
+.slider_section .play_btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 100%;
+  width: 65px;
+  height: 65px;
+  position: relative;
+  z-index: 3;
+  margin-top: 15px;
+  margin-bottom: 45px;
+}
+
+.slider_section .play_btn button {
+  background-color: #00c6a9;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 100%;
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: relative;
+  z-index: 5;
+  color: #ffffff;
+  outline: none;
+}
+
+.slider_section .play_btn::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #00c6a9;
+  opacity: 1;
+  border-radius: 100%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.slider_section .play_btn::before {
+  z-index: 2;
+  -webkit-animation: before-animation 1500ms infinite;
+          animation: before-animation 1500ms infinite;
+}
+
+@-webkit-keyframes before-animation {
+  0% {
+    -webkit-transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+            transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.4);
+            transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes before-animation {
+  0% {
+    -webkit-transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+            transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.4);
+            transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.4);
+    opacity: 0;
+  }
+}
+
+.slider_section .detail-box {
+  color: #252525;
+}
+
+.slider_section .detail-box h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.slider_section .detail-box h1 span {
+  color: #00c6a9;
+}
+
+.slider_section .detail-box p {
+  color: #6d6d6d;
+}
+
+.slider_section .detail-box a {
+  display: inline-block;
+  padding: 10px 45px;
+  background-color: #252525;
+  color: #ffffff;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.slider_section .detail-box a:hover {
+  background-color: #0c0c0c;
+}
+
+.slider_section .img-box img {
+  width: 100%;
+}
+
+.slider_section .carousel_btn-box {
+  position: absolute;
+  bottom: 0;
+  right: 10%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 110px;
+  height: 50px;
+  -webkit-transform: translateY(50%);
+          transform: translateY(50%);
+  z-index: 3;
+}
+
+.slider_section .carousel_btn-box .carousel-control-prev,
+.slider_section .carousel_btn-box .carousel-control-next {
+  position: unset;
+  width: 50px;
+  height: 50px;
+  background-color: #00c6a9;
+  opacity: 1;
+}
+
+.slider_section .carousel_btn-box .carousel-control-prev img,
+.slider_section .carousel_btn-box .carousel-control-next img {
+  width: 10px;
+}
+
+.slider_section .carousel_btn-box .carousel-control-prev:hover,
+.slider_section .carousel_btn-box .carousel-control-next:hover {
+  background-color: #252525;
+}
+
+.book_section h4 {
+  position: relative;
+  padding-bottom: 5px;
+  margin-bottom: 35px;
+}
+
+.book_section h4 span {
+  color: #00c6a9;
+}
+
+.book_section h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 75px;
+  height: 2px;
+  background-color: #00c6a9;
+}
+
+.book_section form {
+  padding: 35px 45px;
+  -webkit-box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.07);
+          box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.07);
+}
+
+.book_section form label {
+  color: #000000;
+}
+
+.book_section form .form-control {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid #00c6a9;
+  height: 45px;
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-radius: 5px;
+  padding: 0 15px;
+}
+
+.book_section form .form-control::-webkit-input-placeholder {
+  color: #00c6a9;
+}
+
+.book_section form .form-control:-ms-input-placeholder {
+  color: #00c6a9;
+}
+
+.book_section form .form-control::-ms-input-placeholder {
+  color: #00c6a9;
+}
+
+.book_section form .form-control::placeholder {
+  color: #00c6a9;
+}
+
+.book_section form #inputDate {
+  color: #00c6a9;
+}
+
+.book_section form #inputDate input {
+  color: #00c6a9;
+}
+
+.book_section form button.btn {
+  background-color: #252525;
+  color: #ffffff;
+  padding: 10px 45px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+.book_section .date_icon {
+  right: 10px;
+  height: 100%;
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #00c6a9;
+}
+
+.book_section .nice-select:after {
+  content: "\f107";
+  font-family: FontAwesome;
+  border: none;
+  width: auto;
+  height: auto;
+  -webkit-transform: none;
+          transform: none;
+  top: 7px;
+  font-size: 20px;
+  font-weight: bold;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+.book_section .nice-select.open:after {
+  content: "\f106";
+}
+
+.about_section .row {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.about_section .img-box img {
+  max-width: 100%;
+}
+
+.about_section .detail-box p {
+  color: #999;
+  margin-top: 15px;
+}
+
+.about_section .detail-box a {
+  display: inline-block;
+  padding: 10px 45px;
+  background-color: #252525;
+  color: #ffffff;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.about_section .detail-box a:hover {
+  background-color: #0c0c0c;
+}
+
+.treatment_section {
+  position: relative;
+}
+
+.treatment_section .side_img {
+  position: absolute;
+  right: 15px;
+  width: 175px;
+  height: auto;
+  bottom: 125px;
+}
+
+.treatment_section .side_img img {
+  width: 100%;
+}
+
+.treatment_section .heading_container h2 {
+  text-transform: none;
+}
+
+.treatment_section .box {
+  margin-top: 45px;
+}
+
+.treatment_section .box .img-box {
+  width: 65px;
+}
+
+.treatment_section .box .img-box img {
+  width: 100%;
+}
+
+.treatment_section .box .detail-box {
+  margin-top: 15px;
+}
+
+.treatment_section .box .detail-box h4 {
+  font-weight: bold;
+}
+
+.treatment_section .box .detail-box a {
+  text-transform: uppercase;
+  color: #00c6a9;
+}
+
+.treatment_section .box .detail-box a:hover {
+  color: #252525;
+}
+
+.team_section {
+  background-color: #00c6a9;
+}
+
+.team_section .heading_container {
+  margin-bottom: 45px;
+}
+
+.team_section .heading_container h2 {
+  color: #000000;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.team_section .heading_container h2 span {
+  color: #ffffff;
+}
+
+.team_section .box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  padding: 0 10px;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(10%, transparent), color-stop(10%, #ffffff));
+  background: linear-gradient(to bottom, transparent 10%, #ffffff 10%);
+}
+
+.team_section .box .img-box img {
+  width: 100%;
+}
+
+.team_section .box .detail-box {
+  padding: 15px;
+  border-radius: 10px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.team_section .box .detail-box h5 {
+  font-weight: bold;
+}
+
+.team_section .box .detail-box h6 {
+  color: #00c6a9;
+}
+
+.team_section .box .detail-box .social_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.team_section .box .detail-box .social_box a {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 18px;
+  margin: 0 2.5px;
+  color: #000000;
+}
+
+.team_section .team_carousel {
+  margin-top: 45px;
+  padding: 0 45px;
+}
+
+.team_section .team_carousel .owl-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 20px;
+}
+
+.team_section .team_carousel .owl-nav button {
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: #ffffff;
+  outline: none;
+  color: #000000;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.team_section .team_carousel .owl-nav button:hover {
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.team_section .team_carousel .owl-nav button.owl-prev {
+  left: -25px;
+}
+
+.team_section .team_carousel .owl-nav button.owl-next {
+  right: -25px;
+}
+
+.client_section .heading_container {
+  margin-bottom: 35px;
+}
+
+.client_section .heading_container h2 {
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.client_section .box {
+  margin: 15px 45px;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
+          box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
+  padding: 25px;
+}
+
+.client_section .box .client_info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.client_section .box .client_info .client_name h5 {
+  font-weight: 600;
+  color: #00c6a9;
+}
+
+.client_section .box .client_info .client_name h6 {
+  margin-bottom: 0;
+  color: #bfc0c0;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+.client_section .box .client_info i {
+  font-size: 24px;
+}
+
+.client_section .box p {
+  margin-top: 15px;
+}
+
+.client_section .carousel-control-prev,
+.client_section .carousel-control-next {
+  width: 45px;
+  height: 125px;
+  background-color: #00c6a9;
+  opacity: 1;
+  font-size: 28px;
+  font-weight: bold;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.client_section .carousel-control-prev {
+  left: 0;
+}
+
+.client_section .carousel-control-next {
+  right: 0;
+}
+
+.contact_section {
+  position: relative;
+}
+
+.contact_section .heading_container {
+  margin-bottom: 25px;
+}
+
+.contact_section .heading_container h2 {
+  text-transform: uppercase;
+}
+
+.contact_section .form_container {
+  margin-right: 45px;
+}
+
+.contact_section .form_container input {
+  width: 100%;
+  border: 1px solid #00c6a9;
+  height: 50px;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  background-color: transparent;
+  outline: none;
+  color: #101010;
+}
+
+.contact_section .form_container input::-webkit-input-placeholder {
+  color: #00c6a9;
+}
+
+.contact_section .form_container input:-ms-input-placeholder {
+  color: #00c6a9;
+}
+
+.contact_section .form_container input::-ms-input-placeholder {
+  color: #00c6a9;
+}
+
+.contact_section .form_container input::placeholder {
+  color: #00c6a9;
+}
+
+.contact_section .form_container input.message-box {
+  height: 120px;
+}
+
+.contact_section .form_container button {
+  border: none;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 15px 65px;
+  background-color: #00c6a9;
+  color: #ffffff;
+  border-radius: 0;
+  font-weight: bold;
+}
+
+.contact_section .form_container button:hover {
+  background-color: #00937d;
+}
+
+.contact_section .img-box img {
+  width: 100%;
+}
+
+.info_section {
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.info_section .info_top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.info_section .info_top .info_logo {
+  margin-right: 45px;
+}
+
+.info_section .info_top .info_logo a {
+  display: block;
+  background-color: #ffffff;
+  padding: 20px 35px;
+}
+
+.info_section .info_top .info_logo a img {
+  width: 55px;
+}
+
+.info_section .info_form {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-top: 15px;
+}
+
+.info_section .info_form form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.info_section .info_form form input {
+  background-color: transparent;
+  padding: 5px 0;
+  outline: none;
+  width: 100%;
+  min-width: 100%;
+  color: #ffffff;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+}
+
+.info_section .info_form form input::-webkit-input-placeholder {
+  color: #9c9c9c;
+}
+
+.info_section .info_form form input:-ms-input-placeholder {
+  color: #9c9c9c;
+}
+
+.info_section .info_form form input::-ms-input-placeholder {
+  color: #9c9c9c;
+}
+
+.info_section .info_form form input::placeholder {
+  color: #9c9c9c;
+}
+
+.info_section .info_form form button {
+  background-color: transparent;
+  color: #00c6a9;
+  margin-top: 15px;
+  text-transform: uppercase;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+}
+
+.info_section h5 {
+  text-transform: uppercase;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 25px;
+}
+
+.info_section h5:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 15px;
+  height: 15px;
+  background-color: #00c6a9;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.info_section .info_links .info_links_menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.info_section .info_links .info_links_menu a {
+  color: #ffffff;
+}
+
+.info_section .info_links .info_links_menu a:not(:nth-last-child(1)) {
+  margin-bottom: 10px;
+}
+
+.info_section .info_links .info_links_menu a:hover, .info_section .info_links .info_links_menu a.active {
+  color: #00c6a9;
+}
+
+.info_section .info_post .post_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.info_section .info_post .post_box .img-box {
+  width: 65px;
+  min-width: 65px;
+  height: 65px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #ffffff;
+  margin-right: 10px;
+}
+
+.info_section .info_post .post_box .img-box img {
+  width: 55px;
+}
+
+.info_section .info_post .post_box p {
+  margin: 0;
+}
+
+.info_section .info_post .post_box:not(:nth-last-child(1)) {
+  margin-bottom: 15px;
+}
+
+.info_section .info_contact a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.info_section .info_contact a i {
+  margin-right: 5px;
+  width: 25px;
+}
+
+.info_section .info_contact a:hover p {
+  color: #ffffff;
+}
+
+.info_section .social_box {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 25px;
+}
+
+.info_section .social_box a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #00c6a9;
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+/* footer section*/
+.footer_section {
+  position: relative;
+  background-color: #252525;
+  text-align: center;
+}
+
+.footer_section p {
+  color: #ffffff;
+  padding: 25px 0;
+  margin: 0;
+}
+
+.footer_section p a {
+  color: inherit;
+}
+
+/*# sourceMappingURL=style.css.map */
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* This makes the container take the full height of the viewport */
+  padding: 20px;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+form {
+  position: relative;
+  left: 450px;
+  background-color: #00c6a9;
+  width: 40%; /* Adjust width as needed */
+  margin: 10px auto; /* Centers the form horizontally with 20px margin on top and bottom */
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: adds shadow for better visibility */
+  color: #ffffff;
+}
+form label {
+  color: #ffffff; /* Example: White color for labels */
+}
+
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px;
+    margin-bottom: 15px; /* Space between inputs */
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Image In Register Nurse*/
+
+.container1 {
+  display: flex; /* This enables Flexbox */
+  /* justify-content: space-around; This spaces the children evenly */
+  align-items: left; /* This vertically centers the items in the container */
+  height: 1vh; /* Optional: takes the full height of the viewport */
+}
+
+.image-container1 {
+  position: relative;
+  left: 300px;
+  bottom: -150px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+
+.form-container1 {
+  flex: 1; /* Takes up 1 portion of the available space */
+  width: 500%; /* Maximum width */
+  
+}
+
+/* Additional styling for the form to make it visually appealing */
+.form-container1 form {
+  /* margin: 0 auto; Centers the form in the div */
+  /* padding: 10px; */
+  /* background-color: #f8f8f8; Light grey background */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds shadow for better visibility */
+}
+/* Login Form...............................................................................*/
+.container2 {
+  display: flex; /* This enables Flexbox */
+  /* justify-content: space-around; This spaces the children evenly */
+  align-items: left; /* This vertically centers the items in the container */
+  height: 1vh; /* Optional: takes the full height of the viewport */
+}
+
+.image-container2 {
+  position: relative;
+  left: 300px;
+  bottom: -150px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+.form-container2 {
+  flex: 1; /* Takes up 1 portion of the available space */
+  width: 500%; /* Maximum width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* This makes the container take the full height of the viewport */
+  padding: 20px;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+/* Additional styling for the form to make it visually appealing */
+.form-container2 form {
+  /* margin: 0 auto; Centers the form in the div */
+  /* padding: 10px; */
+  /* background-color: #f8f8f8; Light grey background */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds shadow for better visibility */
+}
+
+/* Nurse Dashboard Forms.......................................................................................*/
+.container6 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 200px;
+  bottom: -300px;
+  /* right: 0; */
+  max-width: 940px; /* Set the maximum width for horizontal size */
+  max-height: 600px; /* Set the maximum height for vertical size */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+  overflow-x: scroll; /* Hide horizontal scrollbar */
+  border: 1px solid #ccc; /* Optional: Add a border for styling */
+  padding: 15px; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  /* background: #f4f4f4; Add a background color */
+  margin: auto; /* Center the container */
+}
+
+.container7 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: relative;
+  left: 200px;
+  bottom: 500px;
+
+}
+
+.container8 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 1500px;
+  bottom: 2000px;
+
+}
+/*****************************************************************************************************Nurse******************************************************************************/
+.containernb {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 1500px;
+  bottom: 860px;
+
+}
+
+.container9 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 1700px;
+  bottom: 100px;
+  color: brown;
+
+}
+.container10 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  /* left: 1500px; */
+  bottom: -1200px;
+
+}
+.container11 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: relative;
+  /* left: 1500px; */
+  bottom: 450px;
+
+}
+/****************************************************Doctor***********************************************************************************************/
+.container86 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  /* left: 1500px; */
+  bottom: -1250px;
+
+}
+/****************************************************Doctor***********************************************************************************************/
+.container88 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  /* left: 1500px; */
+  bottom: -400px;
+
+}
+/*.......................................................................................................................doc.......................................*/
+.name1{
+
+  position: absolute;
+  left: 420px;
+  bottom: 850px;
+  right: 0;
+  
+
+}
+/****************************************************Nurse***********************************************************************************************/
+.form-container5 {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 200px;
+  bottom: -850px;
+  /* right: 0; */
+  max-width: 940px; /* Set the maximum width for horizontal size */
+  max-height: 400px; /* Set the maximum height for vertical size */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+  overflow-x: scroll; /* Hide horizontal scrollbar */
+  border: 1px solid #ccc; /* Optional: Add a border for styling */
+  padding: 15px; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  /* background-color: #00c6a9; */
+  font-style: #ffffff;
+  margin: auto; /* Center the container */
+}
+/****************************************************Doc***********************************************************************************************/
+.form-containerdo {
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 200px;
+  bottom: 450px;
+  /* right: 0; */
+  max-width: 940px; /* Set the maximum width for horizontal size */
+  max-height: 400px; /* Set the maximum height for vertical size */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+  overflow-x: scroll; /* Hide horizontal scrollbar */
+  border: 1px solid #ccc; /* Optional: Add a border for styling */
+  padding: 15px; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  /* background-color: #00c6a9; */
+  font-style: #ffffff;
+  margin: auto; /* Center the container */
+}
+/****************************************************Nurse***********************************************************************************************/
+.image-container5 {
+  position: absolute;
+  left: 1500px;
+  bottom: -700px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+/*************************************************************************************************Nurse***************************************************************************************/
+.image-container7 {
+  position: absolute;
+  left: 400px;
+  bottom: -450px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+.image-container8 {
+  position: relative;
+  left: 400px;
+  bottom: 700px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+.image-container9 {
+  position: relative;
+  left: 400px;
+  bottom: 550px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+.image-container10 {
+  position: relative;
+  left: -100px;
+  bottom: 500px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+/**************************************************************************************Patient******************************************************************************/
+.image-container11 {
+  position: absolute;
+  left: 250px;
+  bottom: -800px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+
+/**************************************************************************************Patient******************************************************************************/
+.image-container12 {
+  position: absolute;
+  left: 1400px;
+  bottom: 300px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+/**************************************************************************************doctor******************************************************************************/
+.image-container13 {
+  position: absolute;
+  left: 250px;
+  bottom: -300px;
+  right: 0;
+  width: 50px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  /* max-width: 20%;  */
+}
+/**************************************************************************************doctor******************************************************************************/
+.image-container14 {
+  position: absolute;
+  left: 1350px;
+  bottom: 400px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+/**************************************************************************************Patient******************************************************************************/
+.image-container15 {
+  position: absolute;
+  left: 1400px;
+  bottom:-300px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+/**************************************************************************************Patient******************************************************************************/
+.image-container16 {
+  position: absolute;
+  left: 250px;
+  bottom: -1000px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+/**************************************************************************************Doctor******************************************************************************/
+.image-container17 {
+  position: absolute;
+  left: 400px;
+  bottom: 420px;
+  right: 0;
+  width: 300px;
+  flex: 1; /* Takes up 1 portion of the available space */
+  max-width: 20%; /* Maximum width */
+}
+ul {
+  list-style-type: none; /* Remove bullet points from the list */
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 15px; /* Add spacing between list items */
+  font-size: 16px; /* Increase font size for better readability */
+  color: #333; /* Darker font color for better contrast */
+}
+
+h2 {
+  color: #0056b3; /* Color for the heading */
+  text-align: left; /* Align the heading text */
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #ccc; /* Style the horizontal line */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  /* flex: 1; Takes up 1 portion of the available space */
+  width: 220%; /* Maximum width */
+  display: flex;
+  left: -750px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* This makes the container take the full height of the viewport */
+  padding: 20px;
+  box-sizing: border-box;
+  color: #ffffff;
+
+
+}
+/*.............................................Doctor ............................................................................................*/
+.topicd1 {
+  position: absolute;
+  left: 1490px;
+  bottom: 300px;
+  right: 0;
+
+}
+.topicd2 {
+  position: relative;
+  left: 1490px;
+  bottom: -1000px;
+  right: 0;
+
+}
+/*..............................................Nurse...........................................................................................*/
+.topicn1 {
+  position: absolute;
+  left: 420px;
+  bottom: -100px;
+  right: 0;
+
+}
+.topicn2 {
+  position: absolute;
+  left: 420px;
+  bottom: -450px;
+  right: 0;
+
+}
+.topicn3 {
+  position: absolute;
+  left: 1680px;
+  bottom: -30px;
+  right: 0;
+
+}
+.topicur {
+  position: absolute;
+  left: 1540px;
+  bottom: 700px;
+  right: 0;
+
+}
+
+.topic2 {
+  position: relative;
+  left: 1420px;
+  bottom: 400px;
+  right: 0;
+
+}
+/*...............................................Nurse..........................................................................................*/
+.flex-container {
+  display: flex;
+  justify-content: center; /* Adjusts horizontal positioning */
+  align-items: center; /* Adjusts vertical positioning */
+  /* height: 100vh; Make it take the full height of the view */
+  left: 500px;
+  bottom: 400px;
+  position: relative;
+}
+.table-container {
+  max-width: 52.5%; /* Set the maximum width of the table container */
+  max-height: 400px; /* Set the maximum height to control vertical space */
+  margin-left: 500px;
+  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll if needed */
+  border: 1px solid #ccc; /* Optional: Add a border around the container */
+  padding: 10px; /* Padding inside the container */
+  margin: 0 auto; /* Center the container horizontally */
+  box-sizing: border-box; /* Include padding and border in total width/height */
+}
+
+.table {
+  width: 1200px; /* You can specify a specific width for your table */
+  table-layout: fixed; /* Forces fixed layout, prevents columns from resizing unexpectedly */
+}
+
+th, td {
+  padding: 10px; /* Add padding to table cells for better readability */
+  text-align: center; /* Align text in the center */
+  font-size: 14px; /* Adjust font size if needed */
+  word-wrap: break-word; /* Wrap long words if needed */
+}
+
+/****************************************************Doctor***********************************************************************************************/
+.flex-containerd {
+  display: flex;
+  justify-content: center; /* Adjusts horizontal positioning */
+  align-items: center; /* Adjusts vertical positioning */
+  /* height: 100vh; Make it take the full height of the view */
+  left: 1100px;
+  bottom: -100px;
+  position: absolute;
+}
+.table-containerd {
+  max-width: 100%; /* Set the maximum width of the table container */
+  max-height: 400px; /* Set the maximum height to control vertical space */
+  margin-left: 500px;
+  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll if needed */
+  border: 1px solid #ccc; /* Optional: Add a border around the container */
+  padding: 10px; /* Padding inside the container */
+  margin: 0 auto; /* Center the container horizontally */
+  box-sizing: border-box; /* Include padding and border in total width/height */
+}
+
+.table {
+  width: 1200px; /* You can specify a specific width for your table */
+  table-layout: fixed; /* Forces fixed layout, prevents columns from resizing unexpectedly */
+}
+
+th, td {
+  padding: 10px; /* Add padding to table cells for better readability */
+  text-align: center; /* Align text in the center */
+  font-size: 14px; /* Adjust font size if needed */
+  word-wrap: break-word; /* Wrap long words if needed */
+}
+/****************************************************Doctor***********************************************************************************************/
+.flex-containerd2 {
+  display: flex;
+  justify-content: center; /* Adjusts horizontal positioning */
+  align-items: center; /* Adjusts vertical positioning */
+  /* height: 100vh; Make it take the full height of the view */
+  left: 1100px;
+  bottom: -620px;
+  position: absolute;
+}
+.table-containerd2 {
+  max-width: 100%; /* Set the maximum width of the table container */
+  max-height: 400px; /* Set the maximum height to control vertical space */
+  margin-left: 500px;
+  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll if needed */
+  border: 1px solid #ccc; /* Optional: Add a border around the container */
+  padding: 10px; /* Padding inside the container */
+  margin: 0 auto; /* Center the container horizontally */
+  box-sizing: border-box; /* Include padding and border in total width/height */
+}
+
+.table {
+  width: 1200px; /* You can specify a specific width for your table */
+  table-layout: fixed; /* Forces fixed layout, prevents columns from resizing unexpectedly */
+}
+
+th, td {
+  padding: 10px; /* Add padding to table cells for better readability */
+  text-align: center; /* Align text in the center */
+  font-size: 14px; /* Adjust font size if needed */
+  word-wrap: break-word; /* Wrap long words if needed */
+}
+
+/*.........................................................................................................................................*/
+.topic3 {
+  position: absolute;
+  left: 450px;
+  bottom: 770px;
+  right: 0;
+
+}
+/*.........................................................................................................................................*/
+.topic4 {
+  position: absolute;
+  left: 500px;
+  bottom: 240px;
+  right: 0;
+} 
+/*.........................................................................................................................................*/ 
+.topic5 {
+  position: absolute;
+  left: 1360px;
+  bottom: -350px;
+  right: 0;
+
+}
+/*.........................................................................................................................................*/
+.topic6 {
+  position: absolute;
+  left: 1350px;
+  bottom: -900px;
+  right: 0;
+}  
+/*.........................................................................................................................................*/
+.search1 {
+  position: absolute;
+  left: -755px;
+  bottom: 220px;
+  max-width: 1850px;
+  max-height: 400px;
+  right: 0;
+}
+/*.........................................................................................................................................*/
+.search2 {
+  position: absolute;
+  left: -755px;
+  bottom: 750px;
+  max-width: 1850px;
+  max-height: 400px;
+  right: 0;
+}
+/*.........................................................................................................................................*/
+.form-container7 {
+  height: 100%;
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 250px;
+  bottom: 360px;
+  /* right: 0; */
+  max-width: 740px; /* Set the maximum width for horizontal size */
+  max-height: 400px; /* Set the maximum height for vertical size */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+  overflow-x: scroll; /* Hide horizontal scrollbar */
+  border: 1px solid #ccc; /* Optional: Add a border for styling */
+  padding: 15px; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  /* background-color: #00c6a9; */
+  font-style: #ffffff;
+  margin: auto; /* Center the container */
+  font-size: 18px; /* Adjust font size if needed */
+}  
+/*.........................................................................................................................................*/
+.form-container8 {
+  height: 100%;
+  width: 100%; /* Ensure it takes full width of the parent container */
+  position: absolute;
+  left: 250px;
+  bottom: -170px;
+  /* right: 0; */
+  max-width: 740px; /* Set the maximum width for horizontal size */
+  max-height: 400px; /* Set the maximum height for vertical size */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+  overflow-x: scroll; /* Hide horizontal scrollbar */
+  border: 1px solid #ccc; /* Optional: Add a border for styling */
+  padding: 15px; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  /* background-color: #00c6a9; */
+  font-style: #ffffff;
+  margin: auto; /* Center the container */
+}
+/*.........................................................................................................................................*/
+.flex-container1 {
+  display: flex;
+  justify-content: center; /* Adjusts horizontal positioning */
+  align-items: center; /* Adjusts vertical positioning */
+  /* height: 100vh; Make it take the full height of the view */
+  left: 1000px;
+  bottom: -750px;
+  position: absolute;
+}
+.table-container1 {
+  max-width: 100%; /* Set the maximum width of the table container */
+  max-height: 400px; /* Set the maximum height to control vertical space */
+  margin-left: 500px;
+  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll if needed */
+  border: 1px solid #030303; /* Optional: Add a border around the container */
+  padding: 10px; /* Padding inside the container */
+  margin: 0 auto; /* Center the container horizontally */
+  box-sizing: border-box; /* Include padding and border in total width/height */
+}
+
+.table1 {
+  width: 1200px; /* You can specify a specific width for your table */
+  table-layout: fixed; /* Forces fixed layout, prevents columns from resizing unexpectedly */
+}
+
+th, td {
+  padding: 10px; /* Add padding to table cells for better readability */
+  text-align: center; /* Align text in the center */
+  font-size: 14px; /* Adjust font size if needed */
+  word-wrap: break-word; /* Wrap long words if needed */
+}
+/*.........................................................................................................................................*/
+.flex-container2 {
+  display: flex;
+  justify-content: center; /* Adjusts horizontal positioning */
+  align-items: center; /* Adjusts vertical positioning */
+  /* height: 100vh; Make it take the full height of the view */
+  left: 1000px;
+  bottom: -1300px;
+  position: absolute;
+}
+.table-container2 {
+  max-width: 100%; /* Set the maximum width of the table container */
+  max-height: 400px; /* Set the maximum height to control vertical space */
+  margin-left: 500px;
+  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll if needed */
+  border: 1px solid #ccc; /* Optional: Add a border around the container */
+  padding: 10px; /* Padding inside the container */
+  margin: 0 auto; /* Center the container horizontally */
+  box-sizing: border-box; /* Include padding and border in total width/height */
+}
+
+.table2 {
+  width: 1200px; /* You can specify a specific width for your table */
+  table-layout: fixed; /* Forces fixed layout, prevents columns from resizing unexpectedly */
+}
+
+th, td {
+  padding: 10px; /* Add padding to table cells for better readability */
+  text-align: center; /* Align text in the center */
+  font-size: 14px; /* Adjust font size if needed */
+  word-wrap: break-word; /* Wrap long words if needed */
+}
+
+.containerfooter{
+  
+  position: relative; 
+  bottom: -2400px;
+
+}
+/************************************************************************************************Nurse***************************************************************/
+.containernf{
+  
+  position: absolute; 
+  width: 100%;
+  left: 200px;
+  bottom: -450px;
+
+}
+/************************************************************************************************Nurse***************************************************************/
+.containerur{
+  
+  position: absolute; 
+  width: 100%;
+  left: 200px;
+  bottom: 450px;
+
+}
+.emptyp1{
+  
+  position: absolute; 
+  width: 100%;
+  left: 1500px;
+  bottom: -500px;
+
+}
+.emptyp2{
+  
+  position: absolute; 
+  width: 100%;
+  left: 1500px;
+  bottom: -1050px;
+
+}
