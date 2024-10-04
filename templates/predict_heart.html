@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heart Disease Prediction</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+<<<<<<< HEAD
               <!-- Basic -->
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -127,6 +128,13 @@
                 <div class="alert alert-info mt-3">{{ prediction_result }}</div>
             {% endif %}    
         
+=======
+</head>
+<body>
+    <div class="container">
+        <h2>Heart Disease Prediction</h2>
+
+>>>>>>> 5504ffbb32e9ac74a97663bbc5ed524f32331d78
         <!-- Form for prediction input -->
         <form action="{{ url_for('predict_heart_disease') }}" method="POST">
             <!-- Patient Selection Dropdown -->
@@ -177,6 +185,7 @@
         </form>
 
         <!-- Display the prediction result -->
+<<<<<<< HEAD
         <!-- {% if prediction_result %}
             <div class="alert alert-info mt-3">{{ prediction_result }}</div>
         {% endif %} -->
@@ -317,5 +326,11 @@
     </section>
     </div>
     <!-- end info_section -->   
+=======
+        {% if prediction_result %}
+            <div class="alert alert-info mt-3">{{ prediction_result }}</div>
+        {% endif %}
+    </div>
+>>>>>>> 5504ffbb32e9ac74a97663bbc5ed524f32331d78
 </body>
 </html>

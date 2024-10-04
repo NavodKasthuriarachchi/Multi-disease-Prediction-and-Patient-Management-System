@@ -184,6 +184,7 @@
         </ul>
 
     </div>
+<<<<<<< HEAD
 <br>
 <div class="topicn2">
    	<h2 >APPOINTMENTS MADE BY YOU</h2>
@@ -193,6 +194,11 @@
    
     
       <div class="form-container5">
+=======
+    <div class="container">
+    <h2>Appointments Made by You:</h2>
+
+>>>>>>> 5504ffbb32e9ac74a97663bbc5ed524f32331d78
             <!-- Appointments Section -->
             <!-- <h2>Your Patients' Appointments:</h2> -->
             <ul>
@@ -210,6 +216,7 @@
                 {% else %}
                     <li>No appointments available.</li>
                 {% endif %}
+<<<<<<< HEAD
             </ul>   
         </div>
 
@@ -272,6 +279,10 @@
             </div>
         </body>
         </html>    
+=======
+            </ul>
+        </div>
+>>>>>>> 5504ffbb32e9ac74a97663bbc5ed524f32331d78
     </body>
     </html>
     </div>
@@ -350,6 +361,7 @@
         </div>            
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<<<<<<< HEAD
   <!-- info section -->
   <div class="container10">
   <section class="info_section ">
@@ -488,3 +500,88 @@
     
     
 
+=======
+    
+    <div class="container">
+    <h2>Predict Diabetes for a Patient:</h2>
+    <!-- Updated form to select a patient -->
+    <!-- <form action="{{ url_for('add_prediction') }}" method="POST">
+        <label for="patient_id">Select Patient:</label>
+        <select name="patient_id" required>
+            {% for patient in patients %}
+                <option value="{{ patient[0] }}">{{ patient[0] }} {{ patient[2] }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" required><br>
+
+        <label for="bmi">BMI:</label>
+        <input type="number" step="0.01" name="bmi" required><br>
+
+        <label for="glucose">Glucose Level:</label>
+        <input type="number" step="0.01" name="glucose" required><br>
+
+        <button type="submit">Predict Diabetes</button>
+    </form> -->
+
+    <a href="{{ url_for('add_prediction') }}" class="btn btn-primary">Predict Diabetes</a>
+    </div>
+    <!-- Add Heart Disease Prediction Button -->
+    <div class="container">
+    <h2>Predict Heart Disease for a Patient:</h2>
+    <a href="{{ url_for('predict_heart_disease') }}" class="btn btn-info btn-lg">Predict Heart Disease</a>
+    </div>
+
+
+    <!-- <h2>Make an Appointment:</h2>
+    <form action="{{ url_for('book_appointment') }}" method="POST">
+        <label for="doctor_id">Select Doctor:</label>
+        <select name="doctor_id" required>
+            {% for doctor in doctors %}
+                <option value="{{ doctor.id }}">{{ doctor.first_name }} {{ doctor.last_name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="appointment_date">Appointment Date:</label>
+        <input type="date" name="appointment_date" required><br>
+
+        <button type="submit">Book Appointment</button>
+    </form> -->
+    <div class="container">
+    <h2>Upload Report for a Patient:</h2>
+    <form action="{{ url_for('upload_report') }}" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="patient_id" class="form-label">Select Patient</label>
+            <select class="form-select" id="patient_id" name="patient_id" required>
+                {% for patient in patients %}
+                    <option value="{{ patient[0] }}">ID:{{ patient[0] }} | Name: {{ patient[2] }} {{ patient[3] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="mb-3">
+            <label for="doctor_id" class="form-label">Select Doctor</label>
+            <select class="form-select" id="doctor_id" name="doctor_id" required>
+                {% for doctor in doctors %}
+                    <option value="{{ doctor[0] }}">ID:{{ doctor[0] }} | Name: {{ doctor[1] }} {{ doctor[2] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="mb-3">
+            <label for="report_name" class="form-label">Report Name</label>
+            <input type="text" class="form-control" id="report_name" name="report_name" required>
+        </div>
+    
+        <div class="mb-3">
+            <label for="report_file" class="form-label">Upload Report (PDF/Image)</label>
+            <input type="file" class="form-control" id="report_file" name="report_file" required>
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Upload Report</button>
+    </form>
+    </div>
+</body>
+</html>
+>>>>>>> 5504ffbb32e9ac74a97663bbc5ed524f32331d78

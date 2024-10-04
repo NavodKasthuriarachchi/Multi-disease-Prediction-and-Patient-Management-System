@@ -203,11 +203,74 @@
                     {% endfor %}
                 </tbody>
             </table>
+<<<<<<< HEAD
         </div>
     </div>
+=======
+        {% else %}
+            <p>No predictions available.</p>
+        {% endif %}
+
+        <!-- Heart Disease Predictions Section -->
+<h2>Heart Disease Predictions:</h2>
+{% if heart_disease_predictions %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Heart Rate</th>
+                <th>Systolic BP</th>
+                <th>Diastolic BP</th>
+                <th>Blood Sugar</th>
+                <th>CK-MB</th>
+                <th>Troponin</th>
+                <th>Prediction Result</th>
+                <th>Nurse Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prediction in heart_disease_predictions %}
+            <tr>
+                <td>{{ prediction[0] }} {{ prediction[1] }}</td>
+                <td>{{ prediction[2] }}</td>
+                <td>{{ prediction[3] }}</td>
+                <td>{{ prediction[4] }}</td>
+                <td>{{ prediction[5] }}</td>
+                <td>{{ prediction[6] }}</td>
+                <td>{{ prediction[7] }}</td>
+                <td>{{ prediction[8] }}</td>
+                <td>{{ prediction[9] }}</td>
+                <td>{{ prediction[10] }}</td>
+                <td>{{ prediction[11] }} {{ prediction[12] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No heart disease predictions available.</p>
+{% endif %}
+
+
+
+
+        
+<!-- Display uploaded reports for patients -->
+<!-- <h2>Uploaded Reports:</h2>
+<ul>
+    {% if reports %}
+        {% for report in reports %}
+            <li>
+                Report for {{ report.patient_name }}: 
+                <a href="{{ url_for('uploaded_file', filename=report.file_path) }}" target="_blank">View Report</a>
+            </li>
+        {% endfor %}
+>>>>>>> 5504ffbb32e9ac74a97663bbc5ed524f32331d78
     {% else %}
         <p>No predictions available.</p>
     {% endif %}
+<<<<<<< HEAD
     <br><br><br>    
         <!-- Heart Disease Predictions Section -->
         
@@ -478,5 +541,19 @@
     </section>
     </div>
     <!-- end info_section -->
+=======
+</ul> -->
+
+
+    <!-- <h2>View Patient Reports:</h2>
+    <ul>
+        {% for report in reports %}
+            <li>Patient: {{ report.patient_name }} - Diagnosis: {{ report.diagnosis }} - Prescription: {{ report.prescription }}</li>
+        {% else %}
+            <li>No reports available.</li>
+        {% endfor %}
+    </ul> -->
+    <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+>>>>>>> 5504ffbb32e9ac74a97663bbc5ed524f32331d78
 </body>
 </html>
