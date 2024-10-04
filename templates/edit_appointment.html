@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Appointment</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Appointment</h1>
+
+        <form action="" method="POST">
+            <div class="mb-3">
+                <label for="appointment_date" class="form-label">Appointment Date</label>
+                <input type="date" class="form-control" id="appointment_date" name="appointment_date" value="{{ appointment[1] }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="appointment_time" class="form-label">Appointment Time</label>
+                <input type="time" class="form-control" id="appointment_time" name="appointment_time" value="{{ appointment[2] }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="reason" class="form-label">Reason for Appointment</label>
+                <textarea class="form-control" id="reason" name="reason" required>{{ appointment[3] }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Appointment</button>
+        </form>
+        <a href="{{ url_for('nurse_dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</body>
+</html>

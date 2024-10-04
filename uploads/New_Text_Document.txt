@@ -1,0 +1,55 @@
+// Database connection
+$conn = mysqli_connect("localhost", "root", "", "test2");
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} else {
+    // Retrieve products from the database
+    $query = "SELECT id, image_data, image_type, name, price FROM img";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        echo '<div class="products-container">';
+        $counter = 0; // Counter to determine when to start a new row
+
+        // Display each product
+        while ($row = $result->fetch_assoc()) {
+            if ($counter % 4 == 0) {
+                if ($counter > 0) {
+                    echo '</div>'; // Close the previous row if not the first row
+                }
+                echo '<div class="product-row">'; // Start a new row
+            }
+
+            $product_id = $row["id"];
+            $product_name = $row["name"];
+            $product_price = $row["price"];
+            $image_type = $row["image_type"];
+            $image_data = base64_encode($row["image_data"]);
+
+            // Display product details using HTML
+            echo '<div class="product">';
+            echo '<img src="data:image/' . $image_type . ';base64,' . $image_data . '" alt="' . $product_name . '" /><br>';
+            echo '<strong>' . $product_name . '</strong><br>';
+            echo 'Price: $' . number_format($product_price, 2) . '<br>';
+            echo '<button class="add-to-cart-btn" onclick="addToCart(' . $product_id . ')">Add to Cart</button>'; // Customized Add to Cart button
+             // Heart button as favorite/like button
+            echo '<button class="favorite-btn" onclick="toggleFavorite(' . $product_id . ')" onmouseover="hoverGreen(this)" onmouseout="hoverRed(this)">❤️</button>';
+            echo '</div>';
+
+            $counter++;
+
+            // Check if it's the last product and close the last row if necessary
+            if ($counter % 4 == 0 && $counter == $result->num_rows) {
+                echo '</div>'; // Close the last row
+            }
+        }
+
+        echo '</div>'; // Close the products-container div
+    } else {
+        echo "No products found.";
+    }
+
+    $conn->close();
+}
+?>
